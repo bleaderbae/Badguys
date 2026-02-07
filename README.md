@@ -1,6 +1,6 @@
 # Bad Guys Club 🔥
 
-Modern e-commerce website for Bad Guys Club -
+Modern e-commerce website for Bad Guys Club - the lifestyle brand for guys who love MMA, fast cars, gaming, tattoos, and their wives (not necessarily in that order).
 
 Built with Next.js 15, TypeScript, Tailwind CSS, and Shopify integration.
 

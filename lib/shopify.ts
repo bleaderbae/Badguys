@@ -1,8 +1,13 @@
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
-async function ShopifyData(query: string) {
+async function ShopifyData(query: string, variables?: Record<string, any>) {
   const URL = `https://${domain}/api/2024-01/graphql.json`
+
+  const body: { query: string; variables?: Record<string, any> } = { query }
+  if (variables) {
+    body.variables = variables
+  }
 
   const options = {
     endpoint: URL,
@@ -12,7 +17,7 @@ async function ShopifyData(query: string) {
       "Accept": "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify(body),
   }
 
   try {
@@ -96,8 +101,8 @@ export async function getAllProducts() {
 
 export async function getProduct(handle: string) {
   const query = `
-  {
-    product(handle: "${handle}") {
+  query product($handle: String!) {
+    product(handle: $handle) {
       id
       title
       handle
@@ -134,7 +139,7 @@ export async function getProduct(handle: string) {
     }
   }`
 
-  const response = await ShopifyData(query)
+  const response = await ShopifyData(query, { handle })
 
   const product = response.data.product ? response.data.product : []
 
@@ -143,9 +148,9 @@ export async function getProduct(handle: string) {
 
 export async function createCheckout(id: string, quantity: number) {
   const query = `
-    mutation {
+    mutation checkoutCreate($variantId: ID!, $quantity: Int!) {
       checkoutCreate(input: {
-        lineItems: [{ variantId: "${id}", quantity: ${quantity}}]
+        lineItems: [{ variantId: $variantId, quantity: $quantity }]
       }) {
         checkout {
           id
@@ -154,24 +159,29 @@ export async function createCheckout(id: string, quantity: number) {
       }
     }`
 
-  const response = await ShopifyData(query)
+  const response = await ShopifyData(query, { variantId: id, quantity })
 
   const checkout = response.data.checkoutCreate.checkout ? response.data.checkoutCreate.checkout : []
 
   return checkout
 }
 
-export async function updateCheckout(id: string, lineItems: any) {
-  const lineItemsObject = lineItems.map((item: any) => {
-    return `{
-      variantId: "${item.id}",
-      quantity: ${item.variantQuantity}
-    }`
+export interface UpdateCheckoutLineItem {
+  id: string;
+  variantQuantity: number;
+}
+
+export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineItem[]) {
+  const formattedLineItems = lineItems.map((item) => {
+    return {
+      variantId: item.id,
+      quantity: item.variantQuantity
+    }
   })
 
   const query = `
-    mutation {
-      checkoutLineItemsReplace(lineItems: [${lineItemsObject}], checkoutId: "${id}") {
+    mutation checkoutLineItemsReplace($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
+      checkoutLineItemsReplace(lineItems: $lineItems, checkoutId: $checkoutId) {
         checkout {
           id
           webUrl
@@ -188,7 +198,10 @@ export async function updateCheckout(id: string, lineItems: any) {
       }
     }`
 
-  const response = await ShopifyData(query)
+  const response = await ShopifyData(query, {
+    lineItems: formattedLineItems,
+    checkoutId: id,
+  })
 
   const checkout = response.data.checkoutLineItemsReplace.checkout ? response.data.checkoutLineItemsReplace.checkout : []
 

@@ -43,17 +43,17 @@ export default function Header() {
               </Link>
             ))}
 
-            <Link href="/cart">
-              <motion.button
+            <Link href="/cart" aria-label="View cart, 0 items">
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative p-2"
+                className="relative p-2 inline-block"
               >
-                <CartIcon className="w-6 h-6" />
+                <CartIcon className="w-6 h-6" aria-hidden="true" />
                 <span className="absolute -top-1 -right-1 bg-bgc-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   0
                 </span>
-              </motion.button>
+              </motion.div>
             </Link>
           </div>
 

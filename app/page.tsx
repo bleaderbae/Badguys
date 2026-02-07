@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Button from '@/components/Button'
 
 export default function Home() {
   return (
@@ -34,23 +35,15 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/shop">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-bgc-red hover:bg-bgc-red-dark text-white font-bold text-lg rounded-none transition-colors w-64"
-                >
+                <Button className="w-64">
                   SHOP NOW
-                </motion.button>
+                </Button>
               </Link>
 
               <Link href="/about">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 border-2 border-bgc-white hover:bg-white hover:text-bgc-black text-white font-bold text-lg rounded-none transition-colors w-64"
-                >
+                <Button variant="outline-white" className="w-64">
                   OUR STORY
-                </motion.button>
+                </Button>
               </Link>
             </div>
           </motion.div>
@@ -113,13 +106,9 @@ export default function Home() {
 
           <div className="text-center mt-16">
             <Link href="/shop">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-bgc-red hover:bg-bgc-red-dark text-white font-bold text-lg rounded-none transition-colors"
-              >
+              <Button>
                 VIEW ALL PRODUCTS
-              </motion.button>
+              </Button>
             </Link>
           </div>
         </div>
@@ -146,13 +135,9 @@ export default function Home() {
               You're not a villain. You're just a guy with interests. Welcome to the club.
             </p>
             <Link href="/about">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-bgc-red hover:bg-bgc-red text-bgc-red hover:text-white font-bold text-lg rounded-none transition-colors"
-              >
+              <Button variant="outline-red">
                 READ MORE
-              </motion.button>
+              </Button>
             </Link>
           </motion.div>
         </div>

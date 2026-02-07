@@ -22,6 +22,7 @@ async function ShopifyData(query: string) {
 
     return data
   } catch (error) {
+    console.error("Error fetching Shopify data:", error)
     throw new Error("Products not fetched")
   }
 }

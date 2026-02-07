@@ -29,6 +29,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       <div className="h-12 bg-gray-300 border-t-2 border-white flex items-center px-2 shadow-md relative z-50">
         <button 
           onClick={() => setStartOpen(!startOpen)}
+          aria-expanded={startOpen}
+          aria-haspopup="true"
+          aria-controls="start-menu"
           className={`
             px-4 py-1 flex items-center gap-2 border-2 shadow-sm active:shadow-inner active:border-gray-600 transition-all
             ${startOpen ? 'bg-gray-400 border-gray-600 border-r-white border-b-white inset-shadow' : 'bg-gray-300 border-white border-r-gray-600 border-b-gray-600'}

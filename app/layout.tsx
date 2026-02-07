@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, VT323 } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import ClientLayout from '@/components/ClientLayout'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const vt323 = VT323({ weight: '400', subsets: ['latin'], variable: '--font-vt323' })
 
 export const metadata: Metadata = {
-  title: 'Bad Guys Club | BGC',
+  title: 'Bad Guys Club | BGC_OS',
   description: 'Lifestyle brand for guys who love MMA, fast cars, gaming, and their wives.',
   keywords: ['clothing', 'lifestyle', 'mma', 'streetwear', 'bad guys club'],
 }
@@ -18,13 +18,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1">
+    <html lang="en" className={`${inter.variable} ${vt323.variable}`}>
+      <body className="h-screen w-screen overflow-hidden bg-black text-green-500">
+        <ClientLayout>
           {children}
-        </main>
-        <Footer />
+        </ClientLayout>
       </body>
     </html>
   )

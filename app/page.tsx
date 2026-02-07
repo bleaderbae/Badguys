@@ -1,23 +1,14 @@
-import { getAllProducts } from '@/lib/shopify'
-import HeroSection from '@/components/HeroSection'
-import FeaturedSection from '@/components/FeaturedSection'
-import StorySection from '@/components/StorySection'
-import { Product } from '@/lib/types'
+import DesktopIcon from '@/components/DesktopIcon'
 
-export default async function Home() {
-  let products: Product[] = []
-
-  try {
-    products = await getAllProducts()
-  } catch (error) {
-    console.error('Error fetching products:', error)
-  }
-
+export default function Home() {
   return (
-    <div className="relative">
-      <HeroSection />
-      <FeaturedSection products={products} />
-      <StorySection />
+    <div className="grid grid-cols-3 md:grid-cols-6 gap-8 p-8 items-start justify-items-center animate-fade-in">
+      <DesktopIcon label="My Computer" href="/about" icon="💻" />
+      <DesktopIcon label="Shop Network" href="/shop" icon="🌐" />
+      <DesktopIcon label="Recycle Bin" href="/cart" icon="🗑️" />
+      <DesktopIcon label="BadGuys_OS.exe" href="/product" icon="💿" />
+      <DesktopIcon label="Contact_Admin" href="/contact" icon="📧" />
+      <DesktopIcon label="System_Logs.txt" href="/about" icon="📄" />
     </div>
   )
 }

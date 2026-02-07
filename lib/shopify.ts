@@ -26,40 +26,6 @@ async function ShopifyData(query: string) {
   }
 }
 
-export async function getProductsInCollection() {
-  const query = `
-  {
-    products(first: 25) {
-      edges {
-        node {
-          id
-          title
-          handle
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
-          images(first: 5) {
-            edges {
-              node {
-                url
-                altText
-              }
-            }
-          }
-        }
-      }
-    }
-  }`
-
-  const response = await ShopifyData(query)
-
-  const allProducts = response.data.products.edges ? response.data.products.edges : []
-
-  return allProducts
-}
-
 export async function getAllProducts() {
   const query = `
   {

@@ -1,6 +1,8 @@
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
+const DEFAULT_PRODUCT_LIMIT = 25
+
 async function ShopifyData(query: string) {
   const URL = `https://${domain}/api/2024-01/graphql.json`
 
@@ -26,10 +28,10 @@ async function ShopifyData(query: string) {
   }
 }
 
-export async function getProductsInCollection() {
+export async function getProductsInCollection(limit: number = DEFAULT_PRODUCT_LIMIT) {
   const query = `
   {
-    products(first: 25) {
+    products(first: ${limit}) {
       edges {
         node {
           id
@@ -60,10 +62,10 @@ export async function getProductsInCollection() {
   return allProducts
 }
 
-export async function getAllProducts() {
+export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT) {
   const query = `
   {
-    products(first: 25) {
+    products(first: ${limit}) {
       edges {
         node {
           id

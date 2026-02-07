@@ -1,0 +1,18 @@
+
+> badguys@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 1918ms
+ ○ Compiling / ...
+ ✓ Compiled / in 10.9s (1410 modules)
+ ✓ Compiled in 1351ms (638 modules)
+ GET / 200 in 12358ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 2.7s (1392 modules)
+ GET /grid.svg 404 in 3179ms
+ ✓ Compiled in 340ms (624 modules)

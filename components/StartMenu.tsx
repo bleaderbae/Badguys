@@ -20,25 +20,23 @@ export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
         <span className="text-white font-bold font-mono">User</span>
       </div>
       <div className="flex-1 py-2">
-        <MenuLink href="/profile" label="My Account" />
-        <MenuLink href="/cart" label="Cart" />
-        <MenuLink href="/settings" label="Settings" />
+        <MenuLink href="/profile" label="My Account" onClick={onClose} />
+        <MenuLink href="/cart" label="Cart" onClick={onClose} />
+        <MenuLink href="/settings" label="Settings" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
-        <MenuLink href="/about" label="About System" />
+        <MenuLink href="/about" label="About System" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
-        <button className="w-full text-left px-4 py-2 text-white hover:bg-blue-600 font-mono text-sm">
-          Shut Down...
-        </button>
       </div>
     </div>
   )
 }
 
-function MenuLink({ href, label }: { href: string; label: string }) {
+function MenuLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
   return (
     <Link 
       href={href} 
       className="block px-4 py-2 text-white hover:bg-blue-600 font-mono text-sm"
+      onClick={onClick}
     >
       {label}
     </Link>

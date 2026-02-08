@@ -2,13 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import StartMenu from './StartMenu'
+import DesktopIcons from './DesktopIcons'
+import WindowFrame from './WindowFrame'
 
 export default function DesktopShell({ children }: { children: React.ReactNode }) {
   const [startOpen, setStartOpen] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const pathname = usePathname()
 
-  // Use a ref for the start menu button and the menu itself to detect clicks outside
   const startButtonRef = useRef<HTMLButtonElement>(null)
   const startMenuRef = useRef<HTMLDivElement>(null)
 
@@ -44,10 +47,24 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
     }
   }, [startOpen])
 
+  const isHome = pathname === '/'
+
+  // Helper to determine window title based on path
+  const getWindowTitle = (path: string) => {
+    if (path.startsWith('/shop')) return 'Shop Network'
+    if (path.startsWith('/cart')) return 'Recycle Bin'
+    if (path.startsWith('/about')) return 'System Info'
+    if (path.startsWith('/contact')) return 'Contact Admin'
+    if (path.startsWith('/product')) return 'Product Viewer'
+    if (path.startsWith('/profile')) return 'User Profile'
+    if (path.startsWith('/settings')) return 'Settings'
+    return 'Application'
+  }
+
   return (
-    <div className="min-h-screen bg-black font-sans relative isolate grid grid-rows-[1fr] grid-cols-[1fr]">
+    <div className="min-h-screen bg-black font-sans relative isolate overflow-hidden">
       {/* Wallpaper/Background */}
-      <div className="col-start-1 row-start-1 sticky top-0 h-screen w-full -z-10 overflow-hidden">
+      <div className="fixed inset-0 -z-20 overflow-hidden">
         <Image
           src="/wallpaper.jpg"
           alt="Bad Guys Club Wallpaper"
@@ -59,9 +76,22 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      {/* Main Content Area (Desktop Surface or Window) */}
-      <main className="col-start-1 row-start-1 w-full relative z-0 p-4 pb-16 min-h-screen">
-        {children}
+      {/* Main Content Area */}
+      <main className="relative z-0 min-h-screen pb-12">
+        {/* Desktop Icons Layer - Always render icons. If isHome, children IS the icons. */}
+        <div className={`min-h-screen ${!isHome ? 'opacity-50 pointer-events-none fixed inset-0' : ''}`}>
+           {isHome ? children : <DesktopIcons />}
+        </div>
+
+        {/* Window Modal Layer (Only if not home) */}
+        {!isHome && (
+          <div className="fixed inset-0 z-20 flex items-center justify-center p-0 md:p-8 pb-16">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => {/* Optional: Click backdrop to close? */}} />
+            <WindowFrame title={getWindowTitle(pathname)}>
+              {children}
+            </WindowFrame>
+          </div>
+        )}
       </main>
 
       {/* Taskbar */}
@@ -88,8 +118,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         </div>
       </div>
 
-      {/* Position the StartMenu relative to the taskbar container but absolute to viewport effectively via bottom-12 */}
-      {/* Since startMenu is rendered here, we need to pass the ref down or wrap it */}
+      {/* StartMenu */}
       <div ref={startMenuRef}>
         <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
       </div>

@@ -24,13 +24,8 @@ export default function TerminalLoader({ onComplete }: TerminalLoaderProps) {
 
   useEffect(() => {
     if (!started) {
-      const handleKeyPress = () => setStarted(true)
-      window.addEventListener('keydown', handleKeyPress)
-      window.addEventListener('click', handleKeyPress)
-      return () => {
-        window.removeEventListener('keydown', handleKeyPress)
-        window.removeEventListener('click', handleKeyPress)
-      }
+      const timer = setTimeout(() => setStarted(true), 1500)
+      return () => clearTimeout(timer)
     } else {
       let delay = 0
       BOOT_LOGS.forEach((log, index) => {
@@ -51,8 +46,8 @@ export default function TerminalLoader({ onComplete }: TerminalLoaderProps) {
 
   if (!started) {
     return (
-      <div className="fixed inset-0 bg-black text-green-500 font-mono flex items-center justify-center text-xl animate-pulse">
-        Press any key to initialize system...
+      <div className="fixed inset-0 bg-black font-mono p-4 cursor-none">
+        <div className="w-3 h-5 bg-white animate-pulse" />
       </div>
     )
   }

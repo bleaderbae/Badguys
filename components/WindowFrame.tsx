@@ -13,10 +13,8 @@ export default function WindowFrame({ children, title = "Application" }: WindowF
       {/* Title Bar */}
       <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-2 border-b-2 border-gray-600 flex items-center justify-between shrink-0 select-none">
         <div className="flex items-center gap-2 px-2">
-          <div className="w-3 h-3 rounded-full bg-red-500 border border-red-700" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500 border border-yellow-700" />
-          <div className="w-3 h-3 rounded-full bg-green-500 border border-green-700" />
-          <span className="ml-2 text-white font-mono font-bold text-sm tracking-wide uppercase">{title}</span>
+          {/* Removed OSX traffic lights, kept title */}
+          <span className="text-white font-mono font-bold text-sm tracking-wide uppercase">{title}</span>
         </div>
         <Link
           href="/"

@@ -73,9 +73,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   const windowTitle = getWindowTitle(pathname)
 
   return (
-    <div className="min-h-screen bg-black font-sans relative isolate overflow-hidden">
+    <div className="min-h-screen bg-black font-sans isolate overflow-hidden grid grid-cols-[1fr] grid-rows-[1fr]">
       {/* Wallpaper/Background */}
-      <div className="fixed inset-0 -z-20 overflow-hidden">
+      <div className="col-start-1 row-start-1 sticky top-0 h-screen w-full -z-20 overflow-hidden">
         <Image
           src="/wallpaper.jpg"
           alt="Bad Guys Club Wallpaper"
@@ -88,7 +88,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       </div>
 
       {/* Main Content Area */}
-      <main className="relative z-0 min-h-screen pb-12">
+      <main className="col-start-1 row-start-1 z-0 min-h-screen pb-12 w-full">
         {/* Desktop Icons Layer - Always render icons. If isHome, children IS the icons. */}
         <div className={`min-h-screen ${!isHome ? 'fixed inset-0' : ''}`}>
            {isHome ? children : <DesktopIcons />}

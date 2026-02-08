@@ -14,19 +14,19 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   })
 
   return (
-    <div className="min-h-screen bg-[#008080] flex flex-col font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-[#008080] flex flex-col font-sans relative">
       {/* Wallpaper/Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-20" 
+      <div className="fixed inset-0 pointer-events-none opacity-20"
            style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
       />
 
       {/* Main Content Area (Desktop Surface or Window) */}
-      <main className="flex-1 relative z-0 p-4 overflow-auto">
+      <main className="flex-1 relative z-0 p-4 pb-16">
         {children}
       </main>
 
       {/* Taskbar */}
-      <div className="h-12 bg-gray-300 border-t-2 border-white flex items-center px-2 shadow-md relative z-50">
+      <div className="fixed bottom-0 left-0 right-0 h-12 bg-gray-300 border-t-2 border-white flex items-center px-2 shadow-md z-50">
         <button 
           onClick={() => setStartOpen(!startOpen)}
           aria-expanded={startOpen}

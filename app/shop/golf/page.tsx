@@ -42,7 +42,7 @@ function CharacterCreator({ product, onClose }: { product: LocalProduct, onClose
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
     >
-      <div className="w-full max-w-6xl h-[80vh] bg-green-900 border-4 border-yellow-400 flex flex-col md:flex-row rounded-lg overflow-hidden relative shadow-[0_0_50px_rgba(0,255,0,0.3)]">
+      <div className="w-full max-w-6xl h-[90vh] md:h-[80vh] bg-green-900 border-4 border-yellow-400 flex flex-col md:flex-row rounded-lg overflow-hidden relative shadow-[0_0_50px_rgba(0,255,0,0.3)]">
         <button
            onClick={onClose}
            className="absolute top-4 right-4 z-20 bg-red-600 text-white font-bold px-4 py-2 border-2 border-white hover:bg-red-700 uppercase tracking-widest shadow-lg"
@@ -51,7 +51,7 @@ function CharacterCreator({ product, onClose }: { product: LocalProduct, onClose
         </button>
 
         {/* Left: Preview */}
-        <div className="flex-1 relative bg-gradient-to-b from-sky-400 to-green-600 flex items-center justify-center overflow-hidden">
+        <div className="h-64 md:h-auto md:flex-1 shrink-0 relative bg-gradient-to-b from-sky-400 to-green-600 flex items-center justify-center overflow-hidden">
            {/* Retro grid floor */}
            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.2)_100%),repeating-linear-gradient(90deg,transparent_0,transparent_49px,rgba(255,255,255,0.1)_50px),repeating-linear-gradient(0deg,transparent_0,transparent_49px,rgba(255,255,255,0.1)_50px)] [perspective:1000px] [transform:rotateX(60deg)] origin-bottom" />
 
@@ -65,14 +65,14 @@ function CharacterCreator({ product, onClose }: { product: LocalProduct, onClose
            </div>
 
            <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-green-900/90 to-transparent">
-              <h2 className="text-3xl md:text-5xl font-black text-white italic drop-shadow-[4px_4px_0_rgba(0,0,0,0.5)] text-center md:text-left">
+              <h2 className="text-2xl md:text-5xl font-black text-white italic drop-shadow-[4px_4px_0_rgba(0,0,0,0.5)] text-center md:text-left">
                  {product.title}
               </h2>
            </div>
         </div>
 
         {/* Right: Controls */}
-        <div className="w-full md:w-96 bg-gray-900 flex flex-col border-l-4 border-yellow-400 shadow-2xl">
+        <div className="w-full md:w-96 flex-1 md:flex-none bg-gray-900 flex flex-col border-l-4 border-yellow-400 shadow-2xl overflow-hidden">
            <div className="bg-green-800 p-4 border-b border-green-700">
              <h3 className="text-2xl font-black text-yellow-400 italic tracking-tighter uppercase text-center">
                 PLAYER SETUP

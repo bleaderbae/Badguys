@@ -57,6 +57,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
   // Helper to determine window title based on path
   const getWindowTitle = (path: string) => {
+    if (path.startsWith('/shop/golf')) return 'Pro Shop 2K25'
+    if (path.startsWith('/shop/samurai')) return 'Samurai Drop'
+    if (path.startsWith('/shop/all')) return 'Shop Network'
     if (path.startsWith('/shop')) return 'Shop Network'
     if (path.startsWith('/cart')) return 'Recycle Bin'
     if (path.startsWith('/about')) return 'System Info'

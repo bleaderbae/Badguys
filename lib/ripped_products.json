@@ -1,0 +1,98 @@
+[
+  {
+    "id": "golf-polo",
+    "title": "Bad Guys Club Golf Polo",
+    "price": "80.33",
+    "description": "Elevate your casual wardrobe with this stylish Performance Polo. Perfect for both outdoor adventures and casual office wear, this polo brings a modern, sporty vibe to any outfit.",
+    "images": [
+      "https://bgc.gg/wp-content/uploads/2025/08/8972961013069467438_2048_custom.jpeg",
+      "https://bgc.gg/wp-content/uploads/2025/08/18287330513543718971_2048.jpeg"
+    ],
+    "category": "golf",
+    "variants": [
+      {
+        "name": "Color",
+        "options": ["Grey Three", "Black", "White", "Navy"]
+      },
+      {
+        "name": "Size",
+        "options": ["S", "M", "L", "XL", "2XL"]
+      }
+    ]
+  },
+  {
+    "id": "golf-balls",
+    "title": "Golf Balls, 6pcs",
+    "price": "35.56",
+    "description": "Get your audience in the zone with these personalized golf balls. Available in budget-friendly six packs, these golf balls are made with 100% surlyn.",
+    "images": [
+      "https://bgc.gg/wp-content/uploads/2025/09/7146242752710180149_2048.jpeg",
+      "https://bgc.gg/wp-content/uploads/2025/09/5059125757512640365_2048.jpeg"
+    ],
+    "category": "golf",
+    "variants": [
+      {
+        "name": "Quantity",
+        "options": ["6 pcs"]
+      }
+    ]
+  },
+  {
+    "id": "samurai-tee",
+    "title": "Bad Guy Samurai Hang Loose",
+    "price": "30.00",
+    "description": "Comfort Colors 1717 garment-dyed t-shirt; a fully customizable tee made 100% with ring-spun cotton. The soft-washed, garment-dyed fabric brings extra coziness to your wardrobe.",
+    "images": [
+      "https://bgc.gg/wp-content/uploads/2025/01/14367947741079445332_2048-3.jpeg",
+      "https://bgc.gg/wp-content/uploads/2025/01/5301869808421021806_2048-3.jpeg"
+    ],
+    "category": "samurai",
+    "variants": [
+      {
+        "name": "Color",
+        "options": ["Black", "White", "Pepper", "Blue Jean"]
+      },
+      {
+        "name": "Size",
+        "options": ["S", "M", "L", "XL", "2XL", "3XL"]
+      }
+    ]
+  },
+  {
+    "id": "samurai-western",
+    "title": "BGC – Samurai Western",
+    "price": "30.00",
+    "description": "A unique T-Shirt featuring a design of a samurai cowboy on horseback, giving off a mysterious and adventurous vibe. Perfect for those who love a mix of traditional and modern elements.",
+    "images": [
+      "https://bgc.gg/wp-content/uploads/2025/01/9457015431220544179_2048.jpeg",
+      "https://bgc.gg/wp-content/uploads/2025/01/9220953100773920890_2048.jpeg"
+    ],
+    "category": "samurai",
+    "variants": [
+      {
+        "name": "Color",
+        "options": ["Sand", "White", "Natural"]
+      },
+      {
+        "name": "Size",
+        "options": ["S", "M", "L", "XL", "2XL"]
+      }
+    ]
+  },
+  {
+    "id": "trucker-cap",
+    "title": "Snapback Trucker Cap (Embroidery)",
+    "price": "33.15",
+    "description": "Classic snapback trucker cap with high-quality embroidery. Perfect for sunny days on the course or the street.",
+    "images": [
+      "https://bgc.gg/wp-content/uploads/2025/01/snapback-placeholder.jpg"
+    ],
+    "category": "shop-all",
+    "variants": [
+       {
+        "name": "Color",
+        "options": ["Black", "Navy/White"]
+       }
+    ]
+  }
+]

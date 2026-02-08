@@ -9,7 +9,7 @@ const vt323 = VT323({ weight: '400', subsets: ['latin'], variable: '--font-vt323
 
 export const metadata: Metadata = {
   title: 'Bad Guys Club | BGC_OS',
-  description: 'Lifestyle brand for guys who love MMA, fast cars, gaming, and their wives.',
+  description: '1v1 me - kisses only',
   keywords: ['clothing', 'lifestyle', 'mma', 'streetwear', 'bad guys club'],
 }
 

@@ -46,6 +46,10 @@ export interface ProductDetail {
         price: {
           amount: string
         }
+        image: {
+          url: string
+          altText: string
+        }
         selectedOptions: Array<{
           name: string
           value: string

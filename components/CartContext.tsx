@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { createCheckout, checkoutLineItemsAdd, getCheckout } from '@/lib/shopify'
+import { createCheckout, checkoutLineItemsAdd, getCheckout, checkoutLineItemsRemove } from '@/lib/shopify'
 import { MOCK_PRODUCT_DETAILS } from '@/lib/mockData'
 
 type Checkout = {
@@ -39,6 +39,7 @@ interface CartContextType {
   cartLines: any[] // Should be typed properly based on checkout response
   cartCount: number
   addToCart: (variantId: string, quantity: number) => Promise<void>
+  removeFromCart: (lineItemId: string) => Promise<void>
   isLoading: boolean
 }
 
@@ -137,6 +138,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
   }
 
+  const removeFromLocalCart = (lineItemId: string) => {
+      setCartLines(prev => {
+          const newLines = prev.filter(item => item.id !== lineItemId);
+          localStorage.setItem('bgc_local_cart', JSON.stringify(newLines));
+          return newLines;
+      });
+  }
+
   const addToCart = async (variantId: string, quantity: number) => {
     setIsLoading(true)
     try {
@@ -172,10 +181,37 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const removeFromCart = async (lineItemId: string) => {
+    setIsLoading(true)
+    try {
+        if (checkoutId) {
+            try {
+                const checkout = await checkoutLineItemsRemove(checkoutId, [lineItemId])
+                if (checkout) {
+                    setCheckoutId(checkout.id)
+                    setCheckoutUrl(checkout.webUrl)
+                    setCartLines(checkout.lineItems?.edges.map((edge: any) => edge.node) || [])
+                    localStorage.setItem('bgc_checkout_id', checkout.id)
+                    return
+                }
+            } catch (shopifyError) {
+                console.warn('Shopify remove failed, trying local', shopifyError)
+            }
+        }
+        // Fallback to local removal if checkoutId is null or API fails
+        removeFromLocalCart(lineItemId)
+    } catch (error) {
+        console.error('Error removing from cart:', error)
+        removeFromLocalCart(lineItemId)
+    } finally {
+        setIsLoading(false)
+    }
+  }
+
   const cartCount = cartLines.reduce((acc, item) => acc + item.quantity, 0)
 
   return (
-    <CartContext.Provider value={{ checkoutId, checkoutUrl, cartLines, cartCount, addToCart, isLoading }}>
+    <CartContext.Provider value={{ checkoutId, checkoutUrl, cartLines, cartCount, addToCart, removeFromCart, isLoading }}>
       {children}
     </CartContext.Provider>
   )

@@ -22,7 +22,7 @@ export default function StorySection() {
             your partner and actually want to be present for it.
           </p>
           <p className="text-lg text-gray-500 mb-12 text-balance">
-            You're not a villain. You're just a guy with interests. Welcome to the club.
+            You&apos;re not a villain. You&apos;re just a guy with interests. Welcome to the club.
           </p>
           <Button href="/about" variant="outline-red">
             READ MORE

@@ -41,7 +41,7 @@ export default function CartPage() {
 
               <h2 className="text-2xl font-black mb-4">CART IS EMPTY</h2>
               <p className="text-gray-400 mb-8">
-                When you add products to your cart, they'll appear here.
+                When you add products to your cart, they&apos;ll appear here.
               </p>
 
               <Link href="/shop">

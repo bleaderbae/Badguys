@@ -57,6 +57,14 @@ export const MOCK_SHOP_PRODUCTS: Product[] = [
 
 // Mock Card Products
 export const MOCK_CARD_PRODUCTS: Product[] = [
+  // Include QA Test Product in the Vault/Cards view
+  createProductNode(
+    'gid://shopify/Product/qa-test-product',
+    'QA Test Product',
+    'qa-test-product',
+    '10.00',
+    'https://via.placeholder.com/600x600/ff0000/ffffff?text=QA+Product'
+  ),
   createProductNode(
     'gid://shopify/Product/card-charizard',
     'Charizard Base Set',

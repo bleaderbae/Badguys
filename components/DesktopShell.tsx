@@ -57,17 +57,17 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
   // Helper to determine window title based on path
   const getWindowTitle = (path: string) => {
-    if (path.startsWith('/shop/golf')) return 'Pro Shop 2K25'
-    if (path.startsWith('/shop/samurai')) return 'Samurai Drop'
-    if (path.startsWith('/shop/all')) return 'Shop Network'
-    if (path.startsWith('/shop')) return 'Shop Network'
+    if (path.startsWith('/shop/golf')) return 'Pro Shop 2K25.exe'
+    if (path.startsWith('/shop/samurai')) return 'Samurai_Drop.exe'
+    if (path.startsWith('/shop/all')) return 'Shop_Network.exe'
+    if (path.startsWith('/shop')) return 'Shop_Network.exe'
     if (path.startsWith('/cart')) return 'Recycle Bin'
-    if (path.startsWith('/about')) return 'System Info'
-    if (path.startsWith('/contact')) return 'Contact Admin'
-    if (path.startsWith('/product')) return 'Product Viewer'
-    if (path.startsWith('/profile')) return 'User Profile'
-    if (path.startsWith('/settings')) return 'Settings'
-    return 'Application'
+    if (path.startsWith('/about')) return 'System_Info.txt'
+    if (path.startsWith('/contact')) return 'Contact_Admin.exe'
+    if (path.startsWith('/product')) return 'The_Vault.exe'
+    if (path.startsWith('/profile')) return 'User_Profile.dat'
+    if (path.startsWith('/settings')) return 'Settings.cfg'
+    return 'Application.exe'
   }
 
   const windowTitle = getWindowTitle(pathname)

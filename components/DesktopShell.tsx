@@ -37,9 +37,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   }, [startOpen])
 
   return (
-    <div className="min-h-screen bg-black flex flex-col font-sans relative">
+    <div className="min-h-screen bg-black font-sans relative isolate grid grid-rows-[1fr] grid-cols-[1fr]">
       {/* Wallpaper/Background */}
-      <div className="fixed inset-0 z-0">
+      <div className="col-start-1 row-start-1 sticky top-0 h-screen w-full -z-10 overflow-hidden">
         <Image
           src="/wallpaper.jpg"
           alt="Bad Guys Club Wallpaper"
@@ -52,7 +52,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       </div>
 
       {/* Main Content Area (Desktop Surface or Window) */}
-      <main className="flex-1 relative z-0 p-4 pb-16">
+      <main className="col-start-1 row-start-1 w-full relative z-0 p-4 pb-16 min-h-screen">
         {children}
       </main>
 

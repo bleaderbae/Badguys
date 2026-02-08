@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { APP_VERSION } from '@/lib/version'
 
 interface TerminalLoaderProps {
   onComplete: () => void
@@ -12,7 +13,7 @@ const BOOT_LOGS = [
   'Mounting file system...',
   'Checking integrity...',
   'Loading visual interface...',
-  'Starting BGC_OS v1.0...',
+  `Starting BGC_OS v${APP_VERSION}...`,
   'Connecting to server...',
   'Access granted.',
 ]
@@ -24,16 +25,16 @@ export default function TerminalLoader({ onComplete }: TerminalLoaderProps) {
 
   useEffect(() => {
     if (!started) {
-      const timer = setTimeout(() => setStarted(true), 1500)
+      const timer = setTimeout(() => setStarted(true), 500)
       return () => clearTimeout(timer)
     } else {
       let delay = 0
       BOOT_LOGS.forEach((log, index) => {
-        delay += Math.random() * 300 + 100
+        delay += Math.random() * 100 + 50
         setTimeout(() => {
           setLogs(prev => [...prev, log])
           if (index === BOOT_LOGS.length - 1) {
-            setTimeout(onComplete, 800)
+            setTimeout(onComplete, 400)
           }
         }, delay)
       })
@@ -47,7 +48,7 @@ export default function TerminalLoader({ onComplete }: TerminalLoaderProps) {
   if (!started) {
     return (
       <div className="fixed inset-0 bg-black font-mono p-4 cursor-none">
-        <div className="w-3 h-5 bg-white animate-pulse" />
+        <div className="w-3 h-5 bg-white" />
       </div>
     )
   }

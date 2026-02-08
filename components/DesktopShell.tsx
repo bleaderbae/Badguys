@@ -9,17 +9,23 @@ import WindowFrame from './WindowFrame'
 
 export default function DesktopShell({ children }: { children: React.ReactNode }) {
   const [startOpen, setStartOpen] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const pathname = usePathname()
 
   const startButtonRef = useRef<HTMLButtonElement>(null)
   const startMenuRef = useRef<HTMLDivElement>(null)
 
+  // Reset minimized state when navigating
+  useEffect(() => {
+    setIsMinimized(false)
+  }, [pathname])
+
   // Update clock
-  useState(() => {
+  useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
-  })
+  }, [])
 
   // Close start menu when clicking outside
   useEffect(() => {
@@ -61,6 +67,8 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
     return 'Application'
   }
 
+  const windowTitle = getWindowTitle(pathname)
+
   return (
     <div className="min-h-screen bg-black font-sans relative isolate overflow-hidden">
       {/* Wallpaper/Background */}
@@ -79,15 +87,14 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       {/* Main Content Area */}
       <main className="relative z-0 min-h-screen pb-12">
         {/* Desktop Icons Layer - Always render icons. If isHome, children IS the icons. */}
-        <div className={`min-h-screen ${!isHome ? 'opacity-50 pointer-events-none fixed inset-0' : ''}`}>
+        <div className={`min-h-screen ${!isHome ? 'fixed inset-0' : ''}`}>
            {isHome ? children : <DesktopIcons />}
         </div>
 
         {/* Window Modal Layer (Only if not home) */}
-        {!isHome && (
-          <div className="fixed inset-0 z-20 flex items-center justify-center p-0 md:p-8 pb-16">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => {/* Optional: Click backdrop to close? */}} />
-            <WindowFrame title={getWindowTitle(pathname)}>
+        {!isHome && !isMinimized && (
+          <div className="fixed inset-0 z-20 flex items-center justify-center p-0 md:p-8 pb-16 pointer-events-none">
+            <WindowFrame title={windowTitle} onMinimize={() => setIsMinimized(true)}>
               {children}
             </WindowFrame>
           </div>
@@ -111,7 +118,22 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
           <span className="font-bold text-gray-200">Start</span>
         </button>
 
-        <div className="flex-1 mx-4" />
+        <div className="flex-1 mx-4 flex items-center gap-2 overflow-x-auto">
+            {!isHome && (
+                <button
+                    onClick={() => setIsMinimized(!isMinimized)}
+                    className={`
+                        px-4 py-1 flex items-center gap-2 border-2 shadow-sm transition-all min-w-[150px] max-w-[200px] truncate
+                        ${!isMinimized
+                            ? 'bg-gray-700 border-gray-800 border-r-gray-600 border-b-gray-600 inset-shadow'
+                            : 'bg-gray-800 border-gray-600 border-r-gray-900 border-b-gray-900 hover:bg-gray-700'
+                        }
+                    `}
+                >
+                   <span className="font-mono text-xs text-gray-200 truncate">{windowTitle}</span>
+                </button>
+            )}
+        </div>
 
         <div className="bg-gray-800 border-2 border-gray-600 border-b-gray-900 border-r-gray-900 px-4 py-1 shadow-inner text-sm font-mono text-gray-300">
           {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

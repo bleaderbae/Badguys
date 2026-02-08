@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import StartMenu from './StartMenu'
 
@@ -8,11 +8,33 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   const [startOpen, setStartOpen] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
 
+  // Use a ref for the start menu button and the menu itself to detect clicks outside
+  const startButtonRef = useRef<HTMLButtonElement>(null)
+  const startMenuRef = useRef<HTMLDivElement>(null)
+
   // Update clock
   useState(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   })
+
+  // Close start menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (startOpen &&
+          startButtonRef.current &&
+          !startButtonRef.current.contains(event.target as Node) &&
+          startMenuRef.current &&
+          !startMenuRef.current.contains(event.target as Node)) {
+        setStartOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [startOpen])
 
   return (
     <div className="min-h-screen bg-black flex flex-col font-sans relative">
@@ -37,6 +59,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       {/* Taskbar */}
       <div className="fixed bottom-0 left-0 right-0 h-12 bg-gray-900 border-t-2 border-gray-700 flex items-center px-2 shadow-lg z-50">
         <button 
+          ref={startButtonRef}
           onClick={() => setStartOpen(!startOpen)}
           aria-expanded={startOpen}
           aria-haspopup="true"
@@ -57,7 +80,11 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         </div>
       </div>
 
-      <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
+      {/* Position the StartMenu relative to the taskbar container but absolute to viewport effectively via bottom-12 */}
+      {/* Since startMenu is rendered here, we need to pass the ref down or wrap it */}
+      <div ref={startMenuRef}>
+        <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
+      </div>
     </div>
   )
 }

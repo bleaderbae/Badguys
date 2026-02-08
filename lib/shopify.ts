@@ -123,6 +123,30 @@ export async function createCheckout(id: string, quantity: number) {
         checkout {
           id
           webUrl
+          lineItems(first: 25) {
+            edges {
+              node {
+                id
+                title
+                quantity
+                variant {
+                  id
+                  price {
+                    amount
+                  }
+                  title
+                  image {
+                    url
+                    altText
+                  }
+                  product {
+                    handle
+                    title
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }`
@@ -132,6 +156,96 @@ export async function createCheckout(id: string, quantity: number) {
   const checkout = response.data.checkoutCreate.checkout ? response.data.checkoutCreate.checkout : []
 
   return checkout
+}
+
+export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]) {
+  const query = `
+    mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
+      checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
+        checkout {
+          id
+          webUrl
+          lineItems(first: 25) {
+            edges {
+              node {
+                id
+                title
+                quantity
+                variant {
+                  id
+                  price {
+                    amount
+                  }
+                  title
+                  image {
+                    url
+                    altText
+                  }
+                  product {
+                    handle
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+        checkoutUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }`
+
+  const response = await ShopifyData(query, {
+    checkoutId,
+    lineItems,
+  })
+
+  const checkout = response.data.checkoutLineItemsAdd.checkout ? response.data.checkoutLineItemsAdd.checkout : []
+
+  return checkout
+}
+
+export async function getCheckout(checkoutId: string) {
+  const query = `
+  query checkout($checkoutId: ID!) {
+    node(id: $checkoutId) {
+      ... on Checkout {
+        id
+        webUrl
+        lineItems(first: 25) {
+          edges {
+            node {
+              id
+              title
+              quantity
+              variant {
+                id
+                price {
+                  amount
+                }
+                title
+                image {
+                  url
+                  altText
+                }
+                product {
+                  handle
+                  title
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }`
+
+  const response = await ShopifyData(query, { checkoutId })
+
+  return response.data ? response.data.node : null
 }
 
 export interface UpdateCheckoutLineItem {
@@ -159,6 +273,21 @@ export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineIt
                 id
                 title
                 quantity
+                variant {
+                  id
+                  price {
+                    amount
+                  }
+                  title
+                  image {
+                    url
+                    altText
+                  }
+                  product {
+                    handle
+                    title
+                  }
+                }
               }
             }
           }

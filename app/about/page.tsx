@@ -18,7 +18,7 @@ export default function AboutPage() {
               <span className="text-bgc-red">BAD GUYS</span>
             </h1>
             <p className="text-xl text-gray-400">
-              The lifestyle brand for modern guys who do what they love
+              The lifestyle brand for modern guys who just want to hang with the boys
             </p>
           </motion.div>
         </div>
@@ -36,13 +36,13 @@ export default function AboutPage() {
             YOU&apos;RE NOT A BAD GUY
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
-            You just have interests. Maybe you love the rush of a fast car, the technical precision of MMA,
-            the strategy of video games, or the artistry of tattoos. These aren&apos;t crimes. They&apos;re passions.
+            You just have interests. Maybe you just love hanging with the boys. Like, really hanging with the boys.
+            It&apos;s not a crime. It&apos;s a passion.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed">
-            But somewhere along the way, society made you feel guilty about them. Like spending your Saturday
-            at the track instead of at brunch makes you a villain. Like wanting to hit the gym or fire up
-            the console means you&apos;re neglecting your responsibilities.
+            But somewhere along the way, society made you feel guilty about it. Like spending your Saturday
+            having intense boy time instead of at brunch makes you a villain. Like wanting to wrestle
+            with your homies means you&apos;re neglecting your responsibilities.
           </p>
         </motion.div>
 
@@ -54,11 +54,11 @@ export default function AboutPage() {
           className="bg-bgc-gray p-8 border-l-4 border-bgc-red"
         >
           <p className="text-xl font-bold mb-4">
-            Here&apos;s the truth: You can love cars AND love your wife.
+            Here&apos;s the truth: You can love the boys AND love your wife.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed">
-            You can train MMA and still be present at home. You can game with the boys and take your partner
-            to dinner. You can have tattoos and a career. These things aren&apos;t mutually exclusive.
+            You can have deep, meaningful boy time and still be present at home. You can kiss the homies goodnight
+            and take your partner to dinner. You can be one of the boys and have a career. These things aren&apos;t mutually exclusive.
           </p>
         </motion.div>
 
@@ -72,8 +72,8 @@ export default function AboutPage() {
             THE BAD GUYS CLUB
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
-            We&apos;re a community of guys who refuse to apologize for their interests while also being
-            present for the people who matter. We&apos;re not choosing between being a car guy or a good
+            We&apos;re a community of guys who refuse to apologize for their needs while also being
+            present for the people who matter. We&apos;re not choosing between hanging with the boys or being a good
             husband. We&apos;re both.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
@@ -82,19 +82,19 @@ export default function AboutPage() {
           <ul className="space-y-2 text-gray-400 mb-4">
             <li className="flex items-start">
               <span className="text-bgc-red mr-2">▸</span>
-              <span>Feels guilty about spending money on his hobbies but does it anyway</span>
+              <span>Feels guilty about spending money on boy time but does it anyway</span>
             </li>
             <li className="flex items-start">
               <span className="text-bgc-red mr-2">▸</span>
-              <span>Wants to be a better partner but also wants to finish this race/fight/game</span>
+              <span>Wants to be a better partner but also really needs some quality boy time right now</span>
             </li>
             <li className="flex items-start">
               <span className="text-bgc-red mr-2">▸</span>
-              <span>Knows Sunday morning coffee is important but so is that track day</span>
+              <span>Knows Sunday morning coffee is important but so is hanging with the boys</span>
             </li>
             <li className="flex items-start">
               <span className="text-bgc-red mr-2">▸</span>
-              <span>Understands balance isn&apos;t 50/50, it&apos;s being all-in when you&apos;re there</span>
+              <span>Understands balance isn&apos;t 50/50, it&apos;s about making time for the boys</span>
             </li>
           </ul>
           <p className="text-lg text-gray-400 leading-relaxed">

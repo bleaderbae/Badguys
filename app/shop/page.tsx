@@ -41,7 +41,7 @@ export default function ShopPage() {
               <span className="text-bgc-red">COLLECTION</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Gear for guys who do what they love (and feel appropriately guilty about it)
+              Gear for guys who just want to hang with the boys (and feel appropriately guilty about it)
             </p>
           </motion.div>
         </div>

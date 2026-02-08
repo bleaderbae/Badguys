@@ -18,7 +18,7 @@ export default function ContactPage() {
               <span className="text-bgc-red">TOUCH</span>
             </h1>
             <p className="text-xl text-gray-400">
-              Questions? Feedback? Just want to talk cars?
+              Questions? Feedback? Just want to talk about the boys?
             </p>
           </motion.div>
         </div>

@@ -48,7 +48,7 @@ export default function CardsPage() {
             </h1>
             <div className="h-1 w-32 bg-red-800 mx-auto mb-6 shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
             <p className="text-xl text-stone-400 max-w-2xl mx-auto italic font-serif">
-              "What is a man? A miserable little pile of secrets."
+              &quot;What is a man? A miserable little pile of secrets.&quot;
             </p>
           </motion.div>
         </section>
@@ -106,7 +106,7 @@ export default function CardsPage() {
                             {product.node.title}
                           </h3>
                           <p className="text-yellow-600 font-mono text-sm border-t border-stone-700 pt-2 mt-2 inline-block px-4">
-                            {product.node.handle === 'qa-test-product' ? 'QA ITEM' : 'RARE'} // LVL {Math.floor(price / 10)}
+                            {product.node.handle === 'qa-test-product' ? 'QA ITEM' : 'RARE'} {'//'} LVL {Math.floor(price / 10)}
                           </p>
                           <p className="text-stone-400 font-bold mt-2">
                             ${price.toFixed(2)}

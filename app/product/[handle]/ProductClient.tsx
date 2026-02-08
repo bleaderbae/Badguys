@@ -1,15 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { getProduct, createCheckout } from '@/lib/shopify'
+import { getProduct } from '@/lib/shopify'
 import { ProductDetail } from '@/lib/types'
+import { useCart } from '@/components/CartContext'
 
 export default function ProductClient() {
   const params = useParams()
   const handle = params.handle as string
+  const { addToCart } = useCart()
 
   const [product, setProduct] = useState<ProductDetail | null>(null)
   const [loading, setLoading] = useState(true)
@@ -17,6 +19,7 @@ export default function ProductClient() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
+  const [justAdded, setJustAdded] = useState(false)
 
   useEffect(() => {
     async function fetchProduct() {
@@ -43,11 +46,11 @@ export default function ProductClient() {
 
     setAddingToCart(true)
     try {
-      const checkout = await createCheckout(selectedVariant.id, quantity)
-      // Redirect to Shopify checkout
-      window.location.href = checkout.webUrl
+      await addToCart(selectedVariant.id, quantity)
+      setJustAdded(true)
+      setTimeout(() => setJustAdded(false), 2000)
     } catch (error) {
-      console.error('Error creating checkout:', error)
+      console.error('Error adding to cart:', error)
     } finally {
       setAddingToCart(false)
     }
@@ -211,10 +214,16 @@ export default function ProductClient() {
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
                 disabled={!selectedVariant?.availableForSale || addingToCart}
-                className="w-full py-4 bg-bgc-red hover:bg-bgc-red-dark disabled:bg-bgc-gray-light disabled:cursor-not-allowed text-white font-bold text-lg transition-colors"
+                className={`w-full py-4 font-bold text-lg transition-colors ${
+                    justAdded
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-bgc-red hover:bg-bgc-red-dark text-white'
+                } disabled:bg-bgc-gray-light disabled:cursor-not-allowed`}
               >
                 {addingToCart
-                  ? 'ADDING TO CART...'
+                  ? 'ADDING...'
+                  : justAdded
+                  ? 'ADDED TO CART!'
                   : selectedVariant?.availableForSale
                   ? 'ADD TO CART'
                   : 'OUT OF STOCK'}

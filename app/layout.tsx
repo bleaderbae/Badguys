@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, VT323 } from 'next/font/google'
 import './globals.css'
 import ClientLayout from '@/components/ClientLayout'
+import { CartProvider } from '@/components/CartContext'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const vt323 = VT323({ weight: '400', subsets: ['latin'], variable: '--font-vt323' })
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${vt323.variable}`}>
       <body className="min-h-screen bg-black text-green-500">
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <CartProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </CartProvider>
       </body>
     </html>
   )

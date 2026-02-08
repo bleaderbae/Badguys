@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${vt323.variable}`}>
-      <body className="h-screen w-screen overflow-hidden bg-black text-green-500">
+      <body className="min-h-screen bg-black text-green-500">
         <ClientLayout>
           {children}
         </ClientLayout>

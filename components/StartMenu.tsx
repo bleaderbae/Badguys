@@ -26,7 +26,8 @@ export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
         <div className="h-px bg-gray-600 my-2" />
         <MenuLink href="/shop/golf" label="Golf Drop" onClick={onClose} />
         <MenuLink href="/shop/samurai" label="Samurai Drop" onClick={onClose} />
-        <MenuLink href="/shop/all" label="Shop All" onClick={onClose} />
+        <MenuLink href="/shop/all" label="Shop Network" onClick={onClose} />
+        <MenuLink href="/product" label="The Vault" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
         <MenuLink href="/about" label="About System" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />

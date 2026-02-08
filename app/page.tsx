@@ -8,6 +8,8 @@ export default function Home() {
       <DesktopIcon label="Shop Network" href="/shop" icon="🌐" />
       <CartDesktopIcon label="Recycle Bin" href="/cart" />
       <DesktopIcon label="BadGuys_OS.exe" href="/product" icon="💿" />
+      <DesktopIcon label="Samurai_Drop" href="/shop" icon="⚔️" />
+      <DesktopIcon label="Golf_Drop" href="/shop" icon="⛳" />
       <DesktopIcon label="Contact_Admin" href="/contact" icon="📧" />
       <DesktopIcon label="System_Logs.txt" href="/about" icon="📄" />
     </div>

@@ -13,7 +13,7 @@ export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
   return (
     <div
       id="start-menu"
-      className="absolute bottom-12 left-2 w-64 bg-gray-800 border-2 border-gray-600 shadow-xl rounded-t-lg overflow-hidden flex flex-col z-50"
+      className="fixed bottom-12 left-2 w-64 bg-gray-800 border-2 border-gray-600 shadow-xl rounded-t-lg overflow-hidden flex flex-col z-50"
     >
       <div className="bg-gradient-to-r from-green-700 to-green-900 p-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-300 border-2 border-white" />

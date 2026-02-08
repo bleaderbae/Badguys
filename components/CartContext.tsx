@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { createCheckout, checkoutLineItemsAdd, getCheckout } from '@/lib/shopify'
+import { MOCK_PRODUCT_DETAILS } from '@/lib/mockData'
 
 type Checkout = {
   id: string
@@ -55,6 +56,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (storedCheckoutId) {
       setCheckoutId(storedCheckoutId)
       fetchCheckout(storedCheckoutId)
+    } else {
+        // Load local mock cart
+        const localCart = localStorage.getItem('bgc_local_cart')
+        if (localCart) {
+            try {
+                setCartLines(JSON.parse(localCart))
+            } catch (e) {
+                console.error('Error parsing local cart', e)
+            }
+        }
     }
   }, [])
 
@@ -77,14 +88,71 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const addToLocalCart = (variantId: string, quantity: number) => {
+      // Find variant in mocks
+      let foundVariant: any = null;
+      let foundProduct: any = null;
+
+      for (const handle in MOCK_PRODUCT_DETAILS) {
+          const product = MOCK_PRODUCT_DETAILS[handle];
+          const variant = product.variants.edges.find(e => e.node.id === variantId)?.node;
+          if (variant) {
+              foundVariant = variant;
+              foundProduct = product;
+              break;
+          }
+      }
+
+      if (foundVariant && foundProduct) {
+          setCartLines(prev => {
+              const existingIndex = prev.findIndex(item => item.variant.id === variantId);
+              let newLines;
+              if (existingIndex > -1) {
+                  newLines = [...prev];
+                  newLines[existingIndex] = {
+                      ...newLines[existingIndex],
+                      quantity: newLines[existingIndex].quantity + quantity
+                  };
+              } else {
+                   const newItem = {
+                      id: `line_${Date.now()}`,
+                      title: foundProduct.title,
+                      quantity: quantity,
+                      variant: {
+                          id: foundVariant.id,
+                          price: foundVariant.price,
+                          title: foundVariant.title,
+                          image: foundVariant.image,
+                          product: {
+                              handle: foundProduct.handle,
+                              title: foundProduct.title
+                          }
+                      }
+                  };
+                  newLines = [...prev, newItem];
+              }
+              localStorage.setItem('bgc_local_cart', JSON.stringify(newLines));
+              return newLines;
+          });
+      }
+  }
+
   const addToCart = async (variantId: string, quantity: number) => {
     setIsLoading(true)
     try {
+      // Attempt Shopify cart first
       let checkout
-      if (!checkoutId) {
-        checkout = await createCheckout(variantId, quantity)
-      } else {
-        checkout = await checkoutLineItemsAdd(checkoutId, [{ variantId, quantity }])
+      try {
+        if (!checkoutId) {
+            checkout = await createCheckout(variantId, quantity)
+        } else {
+            checkout = await checkoutLineItemsAdd(checkoutId, [{ variantId, quantity }])
+        }
+      } catch (shopifyError) {
+        console.warn('Shopify cart failed, falling back to local mock cart', shopifyError)
+        // Fallback to local
+        addToLocalCart(variantId, quantity)
+        return; // Exit after local add
       }
 
       if (checkout) {
@@ -92,23 +160,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setCheckoutUrl(checkout.webUrl)
         setCartLines(checkout.lineItems?.edges.map((edge: any) => edge.node) || [])
         localStorage.setItem('bgc_checkout_id', checkout.id)
+      } else {
+         // If checkout returned null/empty but no error thrown
+         addToLocalCart(variantId, quantity)
       }
     } catch (error) {
       console.error('Error adding to cart:', error)
-      // If error (e.g. checkout expired), try creating a new checkout
-      if (checkoutId) {
-         try {
-            const newCheckout = await createCheckout(variantId, quantity)
-            if (newCheckout) {
-                setCheckoutId(newCheckout.id)
-                setCheckoutUrl(newCheckout.webUrl)
-                setCartLines(newCheckout.lineItems?.edges.map((edge: any) => edge.node) || [])
-                localStorage.setItem('bgc_checkout_id', newCheckout.id)
-            }
-         } catch (retryError) {
-             console.error('Retry failed:', retryError)
-         }
-      }
+      addToLocalCart(variantId, quantity)
     } finally {
       setIsLoading(false)
     }

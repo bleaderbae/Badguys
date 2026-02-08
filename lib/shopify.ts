@@ -1,3 +1,5 @@
+import { MOCK_SHOP_PRODUCTS, MOCK_PRODUCT_DETAILS, MOCK_CARD_PRODUCTS } from './mockData'
+
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
@@ -60,14 +62,26 @@ export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT) {
     }
   }`
 
-  const response = await ShopifyData(query, { first: limit })
+  try {
+    const response = await ShopifyData(query, { first: limit })
+    const allProducts = response.data.products.edges ? response.data.products.edges : []
+    if (allProducts.length === 0) return MOCK_SHOP_PRODUCTS
+    return allProducts
+  } catch (error) {
+    console.warn("Error fetching products, using mock data:", error)
+    return MOCK_SHOP_PRODUCTS
+  }
+}
 
-  const allProducts = response.data.products.edges ? response.data.products.edges : []
-
-  return allProducts
+export async function getCardProducts() {
+  return MOCK_CARD_PRODUCTS
 }
 
 export async function getProduct(handle: string) {
+  if (MOCK_PRODUCT_DETAILS[handle]) {
+    return MOCK_PRODUCT_DETAILS[handle]
+  }
+
   const query = `
   query product($handle: String!) {
     product(handle: $handle) {
@@ -97,6 +111,10 @@ export async function getProduct(handle: string) {
             price {
               amount
             }
+            image {
+              url
+              altText
+            }
             selectedOptions {
               name
               value
@@ -107,11 +125,14 @@ export async function getProduct(handle: string) {
     }
   }`
 
-  const response = await ShopifyData(query, { handle })
-
-  const product = response.data.product ? response.data.product : []
-
-  return product
+  try {
+    const response = await ShopifyData(query, { handle })
+    const product = response.data.product ? response.data.product : null
+    return product
+  } catch (error) {
+    console.warn("Error fetching product, returning null:", error)
+    return null
+  }
 }
 
 export async function createCheckout(id: string, quantity: number) {

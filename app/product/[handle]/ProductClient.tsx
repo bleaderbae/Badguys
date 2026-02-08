@@ -41,6 +41,18 @@ export default function ProductClient() {
     }
   }, [handle])
 
+  // Update selected image when variant changes
+  useEffect(() => {
+    if (selectedVariant?.image && product) {
+      const imageIndex = product.images.edges.findIndex(
+        (img) => img.node.url === selectedVariant.image.url
+      )
+      if (imageIndex !== -1) {
+        setSelectedImage(imageIndex)
+      }
+    }
+  }, [selectedVariant, product])
+
   const handleAddToCart = async () => {
     if (!selectedVariant) return
 

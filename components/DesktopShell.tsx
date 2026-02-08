@@ -30,9 +30,17 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       }
     }
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (startOpen && event.key === 'Escape') {
+        setStartOpen(false)
+      }
+    }
+
     document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("keydown", handleKeyDown)
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("keydown", handleKeyDown)
     }
   }, [startOpen])
 

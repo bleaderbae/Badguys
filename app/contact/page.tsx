@@ -67,7 +67,7 @@ export default function ContactPage() {
               id="subject"
               name="subject"
               className="w-full px-4 py-3 bg-bgc-gray-light border-2 border-bgc-gray-light focus:border-bgc-red outline-none transition-colors text-white"
-              placeholder="What's this about?"
+              placeholder="What&apos;s this about?"
             />
           </div>
 
@@ -80,7 +80,7 @@ export default function ContactPage() {
               name="message"
               rows={6}
               className="w-full px-4 py-3 bg-bgc-gray-light border-2 border-bgc-gray-light focus:border-bgc-red outline-none transition-colors text-white resize-none"
-              placeholder="Tell us what's on your mind..."
+              placeholder="Tell us what&apos;s on your mind..."
             ></textarea>
           </div>
 
@@ -94,7 +94,7 @@ export default function ContactPage() {
           </motion.button>
 
           <p className="text-sm text-gray-500 text-center">
-            We'll get back to you within 24-48 hours
+            We&apos;ll get back to you within 24-48 hours
           </p>
         </motion.form>
 

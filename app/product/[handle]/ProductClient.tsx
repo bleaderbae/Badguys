@@ -78,7 +78,7 @@ export default function ProductClient() {
       <div className="min-h-screen pt-20 pb-24 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-black mb-4">PRODUCT NOT FOUND</h1>
-          <p className="text-gray-400">The product you're looking for doesn't exist.</p>
+          <p className="text-gray-400">The product you&apos;re looking for doesn&apos;t exist.</p>
         </div>
       </div>
     )

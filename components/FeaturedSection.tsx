@@ -70,7 +70,7 @@ export default function FeaturedSection({ products }: FeaturedSectionProps) {
           <div className="text-center py-12 bg-bgc-gray-light rounded-lg">
             <p className="text-gray-400 mb-4">No products available at the moment.</p>
             <p className="text-sm text-gray-500">
-              (Or maybe we just haven't connected the store yet. Check the README.)
+              (Or maybe we just haven&apos;t connected the store yet. Check the README.)
             </p>
           </div>
         )}

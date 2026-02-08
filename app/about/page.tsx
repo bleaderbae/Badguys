@@ -33,16 +33,16 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-3xl sm:text-4xl font-black mb-6">
-            YOU'RE NOT A BAD GUY
+            YOU&apos;RE NOT A BAD GUY
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
             You just have interests. Maybe you love the rush of a fast car, the technical precision of MMA,
-            the strategy of video games, or the artistry of tattoos. These aren't crimes. They're passions.
+            the strategy of video games, or the artistry of tattoos. These aren&apos;t crimes. They&apos;re passions.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed">
             But somewhere along the way, society made you feel guilty about them. Like spending your Saturday
             at the track instead of at brunch makes you a villain. Like wanting to hit the gym or fire up
-            the console means you're neglecting your responsibilities.
+            the console means you&apos;re neglecting your responsibilities.
           </p>
         </motion.div>
 
@@ -54,11 +54,11 @@ export default function AboutPage() {
           className="bg-bgc-gray p-8 border-l-4 border-bgc-red"
         >
           <p className="text-xl font-bold mb-4">
-            Here's the truth: You can love cars AND love your wife.
+            Here&apos;s the truth: You can love cars AND love your wife.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed">
             You can train MMA and still be present at home. You can game with the boys and take your partner
-            to dinner. You can have tattoos and a career. These things aren't mutually exclusive.
+            to dinner. You can have tattoos and a career. These things aren&apos;t mutually exclusive.
           </p>
         </motion.div>
 
@@ -72,9 +72,9 @@ export default function AboutPage() {
             THE BAD GUYS CLUB
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
-            We're a community of guys who refuse to apologize for their interests while also being
-            present for the people who matter. We're not choosing between being a car guy or a good
-            husband. We're both.
+            We&apos;re a community of guys who refuse to apologize for their interests while also being
+            present for the people who matter. We&apos;re not choosing between being a car guy or a good
+            husband. We&apos;re both.
           </p>
           <p className="text-lg text-gray-400 leading-relaxed mb-4">
             Bad Guys Club is for the guy who:
@@ -94,11 +94,11 @@ export default function AboutPage() {
             </li>
             <li className="flex items-start">
               <span className="text-bgc-red mr-2">▸</span>
-              <span>Understands balance isn't 50/50, it's being all-in when you're there</span>
+              <span>Understands balance isn&apos;t 50/50, it&apos;s being all-in when you&apos;re there</span>
             </li>
           </ul>
           <p className="text-lg text-gray-400 leading-relaxed">
-            You're not a bad guy. You're just a guy with a lifestyle. Welcome to the club.
+            You&apos;re not a bad guy. You&apos;re just a guy with a lifestyle. Welcome to the club.
           </p>
         </motion.div>
 
@@ -113,7 +113,7 @@ export default function AboutPage() {
             JOIN THE CLUB
           </h2>
           <p className="text-gray-400 mb-8">
-            Wear it proud. You're a bad guy, and that's perfectly fine.
+            Wear it proud. You&apos;re a bad guy, and that&apos;s perfectly fine.
           </p>
           <motion.a
             href="/shop"

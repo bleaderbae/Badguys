@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useCart } from '@/components/CartContext'
 
 export default function CartPage() {
-  const { cartLines, cartCount, checkoutUrl, isLoading } = useCart()
+  const { cartLines, cartCount, checkoutUrl, isLoading, removeFromCart } = useCart()
 
   if (cartCount === 0 && !isLoading) {
     return (
@@ -98,9 +98,18 @@ export default function CartPage() {
                        <p className="font-mono text-bgc-red font-bold">
                          Quantity: {item.quantity}
                        </p>
-                       <p className="text-lg font-bold">
-                         ${(parseFloat(item.variant?.price.amount || '0') * item.quantity).toFixed(2)}
-                       </p>
+                       <div className="flex items-center gap-4">
+                           <p className="text-lg font-bold">
+                             ${(parseFloat(item.variant?.price.amount || '0') * item.quantity).toFixed(2)}
+                           </p>
+                           <button
+                             onClick={() => removeFromCart(item.id)}
+                             className="text-gray-500 hover:text-red-500 text-sm font-bold underline decoration-dotted underline-offset-4"
+                             aria-label={`Remove ${item.variant?.product?.title} from cart`}
+                           >
+                             REMOVE
+                           </button>
+                       </div>
                     </div>
                   </div>
                 </div>

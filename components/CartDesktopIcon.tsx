@@ -2,6 +2,7 @@
 
 import DesktopIcon from './DesktopIcon'
 import { useCart } from './CartContext'
+import { TrashIcon, FullTrashIcon } from './Icons'
 
 interface CartDesktopIconProps {
   label?: string
@@ -11,7 +12,13 @@ interface CartDesktopIconProps {
 export default function CartDesktopIcon({ label = "Recycle Bin", href = "/cart" }: CartDesktopIconProps) {
   const { cartCount } = useCart()
 
-  const icon = cartCount > 0 ? "🗑️" : "🗑️" // Could switch icon if needed, e.g. full trash can
+  // Use the SVG icons instead of emojis
+  const icon = cartCount > 0 ? (
+    <FullTrashIcon className="w-8 h-8 text-white" />
+  ) : (
+    <TrashIcon className="w-8 h-8 text-white" />
+  )
+
   const displayLabel = cartCount > 0 ? `${label} (${cartCount})` : label
   const badge = cartCount > 0 ? cartCount : undefined
 

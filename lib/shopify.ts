@@ -179,6 +179,145 @@ export async function createCheckout(id: string, quantity: number) {
   return checkout
 }
 
+export async function getShopInfo() {
+  const query = `
+    query shopInfo {
+      shop {
+        name
+        description
+      }
+    }
+  `
+
+  try {
+    const response = await ShopifyData(query)
+    return response.data.shop ? response.data.shop : { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+  } catch (error) {
+    console.warn("Error fetching shop info:", error)
+    return { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+  }
+}
+
+export async function customerAccessTokenCreate(email: string, password: string) {
+  const query = `
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+      customerAccessTokenCreate(input: $input) {
+        customerAccessToken {
+          accessToken
+          expiresAt
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `
+
+  const response = await ShopifyData(query, {
+    input: { email, password }
+  })
+
+  return response.data.customerAccessTokenCreate
+}
+
+export async function customerCreate(email: string, password: string, firstName?: string, lastName?: string) {
+  const query = `
+    mutation customerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+          firstName
+          lastName
+        }
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `
+
+  const response = await ShopifyData(query, {
+    input: { email, password, firstName, lastName }
+  })
+
+  return response.data.customerCreate
+}
+
+export async function getCustomer(accessToken: string) {
+  const query = `
+    query customer($customerAccessToken: String!) {
+      customer(customerAccessToken: $customerAccessToken) {
+        id
+        firstName
+        lastName
+        email
+        phone
+        defaultAddress {
+          id
+          address1
+          address2
+          city
+          province
+          zip
+          country
+        }
+        orders(first: 10) {
+          edges {
+            node {
+              id
+              orderNumber
+              totalPrice {
+                amount
+                currencyCode
+              }
+              processedAt
+              financialStatus
+              fulfillmentStatus
+              lineItems(first: 5) {
+                edges {
+                  node {
+                    title
+                    quantity
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const response = await ShopifyData(query, {
+    customerAccessToken: accessToken
+  })
+
+  return response.data.customer
+}
+
+export async function customerRecover(email: string) {
+  const query = `
+    mutation customerRecover($email: String!) {
+      customerRecover(email: $email) {
+        customerUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `
+
+  const response = await ShopifyData(query, { email })
+
+  return response.data.customerRecover
+}
+
 export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]) {
   const query = `
     mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {

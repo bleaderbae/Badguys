@@ -7,9 +7,13 @@ import { Product } from '@/lib/types'
 
 interface ShopClientProps {
   products: Product[]
+  shopInfo: {
+    name: string
+    description: string
+  }
 }
 
-export default function ShopClient({ products }: ShopClientProps) {
+export default function ShopClient({ products, shopInfo }: ShopClientProps) {
   return (
     <div className="min-h-screen pt-20 pb-24">
       {/* Hero */}
@@ -25,7 +29,7 @@ export default function ShopClient({ products }: ShopClientProps) {
               <span className="text-bgc-red">COLLECTION</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Gear for guys who just want to hang with the boys (and feel appropriately guilty about it)
+              {shopInfo.description || "Gear for guys who just want to hang with the boys (and feel appropriately guilty about it)"}
             </p>
           </motion.div>
         </div>

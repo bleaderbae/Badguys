@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="text-bgc-red"> CLUB</span>
             </div>
             <p className="text-gray-400 max-w-md mb-4">
-              Lifestyle brand for guys who love MMA, fast cars, gaming, and
+              Lifestyle brand for guys who the boys, AND
               their wives.
             </p>
             <p className="text-gray-500 text-sm">

@@ -149,12 +149,11 @@ export const MOCK_PRODUCT_DETAILS: Record<string, ProductDetail> = {
       ],
     },
   },
-  // We can add more details for other products if needed, but the QA one is critical.
   'golf-polo': {
     id: 'gid://shopify/Product/golf-polo',
     title: 'Bad Guys Club Golf Polo',
     handle: 'golf-polo',
-    description: 'Elevate your casual wardrobe with this stylish Performance Polo.',
+    description: "Standard issue for the club. Whether you're closing deals or closing out the back nine, this performance polo keeps you cool under pressure. Breathable, durable, and undeniably bad.",
     images: {
         edges: [
             { node: { url: 'https://bgc.gg/wp-content/uploads/2025/08/8972961013069467438_2048_custom.jpeg', altText: 'Golf Polo' } },
@@ -186,5 +185,58 @@ export const MOCK_PRODUCT_DETAILS: Record<string, ProductDetail> = {
             }
         ]
     }
-  }
+  },
+  'samurai-tee': {
+    id: 'gid://shopify/Product/samurai-tee',
+    title: 'Bad Guy Samurai Hang Loose',
+    handle: 'samurai-tee',
+    description: "Warrior spirit, island vibes. The Samurai Hang Loose tee features our signature skeletal ronin keeping it chill. 100% cotton, 100% attitude. Wear it till it's bones.",
+    images: {
+      edges: [
+        {
+          node: {
+            url: 'https://bgc.gg/wp-content/uploads/2025/01/14367947741079445332_2048-3.jpeg',
+            altText: 'Samurai Tee',
+          },
+        },
+      ],
+    },
+    options: [
+      {
+        id: 'opt-size',
+        name: 'Size',
+        values: ['L', 'XL'],
+      },
+    ],
+    variants: {
+      edges: [
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/samurai-l',
+            title: 'L',
+            availableForSale: true,
+            price: { amount: '30.00' },
+            image: {
+              url: 'https://bgc.gg/wp-content/uploads/2025/01/14367947741079445332_2048-3.jpeg',
+              altText: 'Samurai Tee',
+            },
+            selectedOptions: [{ name: 'Size', value: 'L' }],
+          },
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/samurai-xl',
+            title: 'XL',
+            availableForSale: true,
+            price: { amount: '30.00' },
+            image: {
+              url: 'https://bgc.gg/wp-content/uploads/2025/01/14367947741079445332_2048-3.jpeg',
+              altText: 'Samurai Tee',
+            },
+            selectedOptions: [{ name: 'Size', value: 'XL' }],
+          },
+        },
+      ],
+    },
+  },
 }

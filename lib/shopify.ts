@@ -325,3 +325,53 @@ export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineIt
 
   return checkout
 }
+
+export async function checkoutLineItemsRemove(checkoutId: string, lineItemIds: string[]) {
+  const query = `
+    mutation checkoutLineItemsRemove($checkoutId: ID!, $lineItemIds: [ID!]!) {
+      checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
+        checkout {
+          id
+          webUrl
+          lineItems(first: 25) {
+            edges {
+              node {
+                id
+                title
+                quantity
+                variant {
+                  id
+                  price {
+                    amount
+                  }
+                  title
+                  image {
+                    url
+                    altText
+                  }
+                  product {
+                    handle
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+        checkoutUserErrors {
+          code
+          field
+          message
+        }
+      }
+    }`
+
+  const response = await ShopifyData(query, {
+    checkoutId,
+    lineItemIds,
+  })
+
+  const checkout = response.data.checkoutLineItemsRemove.checkout ? response.data.checkoutLineItemsRemove.checkout : []
+
+  return checkout
+}

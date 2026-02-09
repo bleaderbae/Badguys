@@ -5,7 +5,7 @@ const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_
 
 const DEFAULT_PRODUCT_LIMIT = 25
 
-async function ShopifyData(query: string, variables?: Record<string, any>) {
+export async function ShopifyData(query: string, variables?: Record<string, any>) {
   const URL = `https://${domain}/api/2024-01/graphql.json`
 
   const body: { query: string; variables?: Record<string, any> } = { query }

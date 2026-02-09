@@ -1,8 +1,8 @@
-import Link from 'next/link'
+import Link from "next/link";
+
+const currentYear = new Date().getFullYear();
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
-
   return (
     <footer className="bg-bgc-gray border-t border-bgc-gray-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -14,7 +14,8 @@ export default function Footer() {
               <span className="text-bgc-red"> CLUB</span>
             </div>
             <p className="text-gray-400 max-w-md mb-4">
-              Lifestyle brand for guys who love MMA, fast cars, gaming, and their wives.
+              Lifestyle brand for guys who the boys, AND
+              their wives.
             </p>
             <p className="text-gray-500 text-sm">
               (Not necessarily in that order.)
@@ -26,22 +27,34 @@ export default function Footer() {
             <h3 className="font-bold text-white mb-4">SHOP</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/shop" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/shop"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="/shop/new" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/shop/new"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   New Arrivals
                 </Link>
               </li>
               <li>
-                <Link href="/shop/bestsellers" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/shop/bestsellers"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Bestsellers
                 </Link>
               </li>
               <li>
-                <Link href="/shop/sale" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/shop/sale"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Sale
                 </Link>
               </li>
@@ -53,22 +66,34 @@ export default function Footer() {
             <h3 className="font-bold text-white mb-4">INFO</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/about"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/shipping"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Shipping & Returns
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/faq"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   FAQ
                 </Link>
               </li>
@@ -120,5 +145,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

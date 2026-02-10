@@ -155,7 +155,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         if (!checkoutId) {
             checkout = await createCheckout(variantId, quantity)
         } else {
-            checkout = await checkoutLineItemsAdd(checkoutId, [{ variantId, quantity }])
+            // Attempt to add to existing checkout
+            try {
+                checkout = await checkoutLineItemsAdd(checkoutId, [{ variantId, quantity }])
+            } catch (addError) {
+                console.warn('Failed to add to existing checkout, creating new checkout session:', addError)
+                // If adding fails (e.g. expired checkout), create a new one
+                checkout = await createCheckout(variantId, quantity)
+            }
         }
       } catch (shopifyError) {
         console.warn('Shopify cart failed, falling back to local mock cart', shopifyError)

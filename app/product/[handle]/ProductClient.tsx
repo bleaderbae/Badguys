@@ -131,7 +131,8 @@ export default function ProductClient() {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square bg-bgc-gray-light relative overflow-hidden ${
+                    aria-label={`View image ${index + 1} of ${images.length}`}
+                    className={`aspect-square bg-bgc-gray-light relative overflow-hidden focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none ${
                       selectedImage === index ? 'ring-2 ring-bgc-red' : ''
                     }`}
                   >
@@ -184,7 +185,8 @@ export default function ProductClient() {
                           key={value}
                           onClick={() => variant && setSelectedVariant(variant.node)}
                           disabled={!variant?.node.availableForSale}
-                          className={`px-4 py-2 font-bold border-2 transition-colors ${
+                          aria-pressed={isSelected}
+                          className={`px-4 py-2 font-bold border-2 transition-colors focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none ${
                             isSelected
                               ? 'bg-bgc-red border-bgc-red text-white'
                               : variant?.node.availableForSale
@@ -206,14 +208,16 @@ export default function ProductClient() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 bg-bgc-gray-light hover:bg-bgc-red transition-colors font-bold"
+                    aria-label="Decrease quantity"
+                    className="w-10 h-10 bg-bgc-gray-light hover:bg-bgc-red transition-colors font-bold focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none"
                   >
                     -
                   </button>
                   <span className="text-xl font-bold w-12 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 bg-bgc-gray-light hover:bg-bgc-red transition-colors font-bold"
+                    aria-label="Increase quantity"
+                    className="w-10 h-10 bg-bgc-gray-light hover:bg-bgc-red transition-colors font-bold focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none"
                   >
                     +
                   </button>
@@ -226,7 +230,8 @@ export default function ProductClient() {
                 whileTap={{ scale: 0.98 }}
                 onClick={handleAddToCart}
                 disabled={!selectedVariant?.availableForSale || addingToCart}
-                className={`w-full py-4 font-bold text-lg transition-colors ${
+                aria-busy={addingToCart}
+                className={`w-full py-4 font-bold text-lg transition-colors focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none ${
                     justAdded
                     ? 'bg-green-600 hover:bg-green-700 text-white'
                     : 'bg-bgc-red hover:bg-bgc-red-dark text-white'

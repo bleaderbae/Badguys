@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Product } from '@/lib/types'
+import { ProductEdge } from '@/lib/types'
 
 interface ShopClientProps {
-  products: Product[]
+  products: ProductEdge[]
   shopInfo: {
     name: string
     description: string
@@ -41,7 +41,7 @@ export default function ShopClient({ products, shopInfo }: ShopClientProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map((product, index) => {
               const image = product.node.images.edges[0]?.node
-              const price = parseFloat(product.node.priceRange.minVariantPrice.amount)
+              const price = parseFloat(product.node.priceRange?.minVariantPrice.amount || '0')
 
               return (
                 <motion.div

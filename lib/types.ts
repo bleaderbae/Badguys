@@ -1,69 +1,67 @@
+export interface Connection<T> {
+  edges: Array<{
+    node: T;
+  }>;
+}
+
+export interface Image {
+  url: string;
+  altText?: string;
+}
+
+export interface Price {
+  amount: string;
+  currencyCode?: string;
+}
+
 export interface Product {
-  node: {
-    id: string
-    title: string
-    handle: string
-    priceRange: {
-      minVariantPrice: {
-        amount: string
-      }
-    }
-    images: {
-      edges: Array<{
-        node: {
-          url: string
-          altText: string
-        }
-      }>
-    }
-  }
+  id: string;
+  handle: string;
+  title: string;
+  description?: string;
+  priceRange?: {
+    minVariantPrice: Price;
+  };
+  images: Connection<Image>;
+  options?: Array<{
+    id?: string;
+    name: string;
+    values: string[];
+  }>;
+  variants?: Connection<Variant>;
 }
 
-export interface ProductDetail {
-  id: string
-  title: string
-  handle: string
-  description: string
-  images: {
-    edges: Array<{
-      node: {
-        url: string
-        altText: string
-      }
-    }>
-  }
-  options: Array<{
-    name: string
-    values: string[]
-    id: string
-  }>
-  variants: {
-    edges: Array<{
-      node: {
-        id: string
-        title: string
-        availableForSale: boolean
-        price: {
-          amount: string
-        }
-        image: {
-          url: string
-          altText: string
-        }
-        selectedOptions: Array<{
-          name: string
-          value: string
-        }>
-      }
-    }>
-  }
+export interface Variant {
+  id: string;
+  title: string;
+  availableForSale?: boolean;
+  price: Price;
+  image?: Image;
+  selectedOptions?: Array<{
+    name: string;
+    value: string;
+  }>;
+  product?: {
+    handle: string;
+    title: string;
+  };
 }
 
-export interface CartItem {
-  id: string
-  title: string
-  handle: string
-  image: string
-  price: string
-  variantQuantity: number
+export interface LineItem {
+  id: string;
+  title: string;
+  quantity: number;
+  variant?: Variant;
 }
+
+export interface Checkout {
+  id: string;
+  webUrl: string;
+  lineItems: Connection<LineItem>;
+}
+
+export interface ProductEdge {
+  node: Product;
+}
+
+export type ProductDetail = Product;

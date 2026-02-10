@@ -14,8 +14,9 @@ jest.mock('next/navigation', () => ({
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: any) => {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} />
+    const { fill, priority, loading, quality, sizes, unoptimized, ...rest } = props
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    return <img {...rest} />
   },
 }))
 
@@ -30,8 +31,12 @@ jest.mock('@/components/CartContext', () => ({
 // Mock framer-motion to avoid animation issues in tests
 jest.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    div: ({ children, whileHover, whileTap, initial, animate, transition, exit, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
+    button: ({ children, whileHover, whileTap, initial, animate, transition, exit, ...props }: any) => (
+      <button {...props}>{children}</button>
+    ),
   },
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }))

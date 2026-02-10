@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
+import ProductGridSkeleton from '@/components/ProductGridSkeleton'
 import { getCardProducts } from '@/lib/shopify'
 import { ProductEdge } from '@/lib/types'
 
@@ -56,11 +57,12 @@ export default function CardsPage() {
         {/* Products Grid */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="animate-pulse bg-stone-800/50 border border-stone-700 h-96 rounded-sm"></div>
-              ))}
-            </div>
+            <ProductGridSkeleton
+              count={4}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+              itemClassName="bg-stone-800/50 border border-stone-700 rounded-sm"
+              imageAspectRatio="aspect-[3/4]"
+            />
           ) : products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
               {products.map((product, index) => {

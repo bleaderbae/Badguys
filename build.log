@@ -1,0 +1,20 @@
+
+> badguys@1.0.0 build /app
+> next build
+
+   ▲ Next.js 15.5.12
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 15.9s
+   Linting and checking validity of types ...
+
+./app/product/[handle]/ProductClient.test.tsx
+22:28  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+22:28  Warning: img elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+Error fetching products, using mock data: Error: Products not fetched
+    at h (.next/server/chunks/491.js:1:1780)
+    at async i (.next/server/chunks/491.js:25:16)
+    at async Object.g [as generateStaticParams] (.next/server/app/product/[handle]/page.js:2:13098)

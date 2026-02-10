@@ -4,13 +4,15 @@ import Header from './Header';
 
 // Mock next/link to behave like a normal anchor tag
 jest.mock('next/link', () => {
-  return ({ children, href, ...rest }: { children: React.ReactNode; href: string; [key: string]: any }) => {
+  const MockLink = ({ children, href, ...rest }: { children: React.ReactNode; href: string; [key: string]: any }) => {
     return (
       <a href={href} {...rest}>
         {children}
       </a>
     );
   };
+  MockLink.displayName = 'Link';
+  return MockLink;
 });
 
 // Mock framer-motion to avoid animation issues and prop warnings
@@ -23,12 +25,21 @@ jest.mock('framer-motion', () => {
     return validProps;
   };
 
+  const MockMotionDiv = ({ children, ...props }: any) => <div {...filterMotionProps(props)}>{children}</div>;
+  MockMotionDiv.displayName = 'motion.div';
+
+  const MockMotionButton = ({ children, ...props }: any) => <button {...filterMotionProps(props)}>{children}</button>;
+  MockMotionButton.displayName = 'motion.button';
+
+  const MockAnimatePresence = ({ children }: any) => <>{children}</>;
+  MockAnimatePresence.displayName = 'AnimatePresence';
+
   return {
     motion: {
-      div: ({ children, ...props }: any) => <div {...filterMotionProps(props)}>{children}</div>,
-      button: ({ children, ...props }: any) => <button {...filterMotionProps(props)}>{children}</button>,
+      div: MockMotionDiv,
+      button: MockMotionButton,
     },
-    AnimatePresence: ({ children }: any) => <>{children}</>,
+    AnimatePresence: MockAnimatePresence,
   };
 });
 

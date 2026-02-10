@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { getProduct } from '@/lib/shopify'
-import { ProductDetail } from '@/lib/types'
+import { ProductDetail, Variant } from '@/lib/types'
 import { useCart } from '@/components/CartContext'
 
 export default function ProductClient() {
@@ -15,7 +15,7 @@ export default function ProductClient() {
 
   const [product, setProduct] = useState<ProductDetail | null>(null)
   const [loading, setLoading] = useState(true)
-  const [selectedVariant, setSelectedVariant] = useState<any>(null)
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null)
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
@@ -26,7 +26,7 @@ export default function ProductClient() {
       try {
         const productData = await getProduct(handle)
         setProduct(productData)
-        if (productData.variants.edges.length > 0) {
+        if (productData && productData.variants && productData.variants.edges.length > 0) {
           setSelectedVariant(productData.variants.edges[0].node)
         }
       } catch (error) {
@@ -45,7 +45,7 @@ export default function ProductClient() {
   useEffect(() => {
     if (selectedVariant?.image && product) {
       const imageIndex = product.images.edges.findIndex(
-        (img) => img.node.url === selectedVariant.image.url
+        (img) => img.node.url === selectedVariant.image!.url
       )
       if (imageIndex !== -1) {
         setSelectedImage(imageIndex)
@@ -164,18 +164,18 @@ export default function ProductClient() {
               </div>
 
               {/* Variants */}
-              {product.options.map((option) => (
+              {product.options?.map((option) => (
                 <div key={option.id} className="mb-6">
                   <label className="block font-bold mb-2">{option.name}</label>
                   <div className="flex flex-wrap gap-2">
                     {option.values.map((value) => {
-                      const variant = product.variants.edges.find((v) =>
-                        v.node.selectedOptions.some(
+                      const variant = product.variants?.edges.find((v) =>
+                        v.node.selectedOptions?.some(
                           (opt) => opt.name === option.name && opt.value === value
                         )
                       )
 
-                      const isSelected = selectedVariant?.selectedOptions.some(
+                      const isSelected = selectedVariant?.selectedOptions?.some(
                         (opt: any) => opt.name === option.name && opt.value === value
                       )
 

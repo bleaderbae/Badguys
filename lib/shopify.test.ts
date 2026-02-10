@@ -5,7 +5,8 @@ import {
   customerAccessTokenCreate,
   customerCreate,
   getCustomer,
-  customerRecover
+  customerRecover,
+  updateCheckout
 } from './shopify';
 import { MOCK_SHOP_PRODUCTS } from './mockData';
 
@@ -165,6 +166,68 @@ describe('Shopify API Handling', () => {
 
       const result = await customerRecover('test@example.com');
       expect(result).toEqual(mockRecover.data.customerRecover);
+    });
+  });
+
+  describe('updateCheckout', () => {
+    it('should update checkout line items and return the checkout object', async () => {
+      const mockCheckout = {
+        data: {
+          checkoutLineItemsReplace: {
+            checkout: {
+              id: 'checkout-1',
+              webUrl: 'https://checkout.url',
+              lineItems: { edges: [] }
+            }
+          }
+        }
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockCheckout),
+      });
+
+      const lineItems = [{ id: 'variant-1', variantQuantity: 2 }];
+      const result = await updateCheckout('checkout-1', lineItems);
+
+      expect(result).toEqual(mockCheckout.data.checkoutLineItemsReplace.checkout);
+
+      // Verify that fetch was called with the correct formatted line items
+      const expectedQueryVariables = {
+        checkoutId: 'checkout-1',
+        lineItems: [{ variantId: 'variant-1', quantity: 2 }]
+      };
+
+      const lastCall = (global.fetch as jest.Mock).mock.calls[0];
+      const body = JSON.parse(lastCall[1].body);
+      expect(body.variables).toEqual(expectedQueryVariables);
+    });
+
+    it('should return null when checkout update fails (checkout is null)', async () => {
+      const mockResponse = {
+        data: {
+          checkoutLineItemsReplace: {
+            checkout: null
+          }
+        }
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValue({
+        json: jest.fn().mockResolvedValue(mockResponse),
+      });
+
+      const lineItems = [{ id: 'variant-1', variantQuantity: 1 }];
+      const result = await updateCheckout('checkout-1', lineItems);
+
+      expect(result).toBeNull();
+    });
+
+    it('should throw an error when the API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+
+      const lineItems = [{ id: 'variant-1', variantQuantity: 1 }];
+
+      await expect(updateCheckout('checkout-1', lineItems)).rejects.toThrow('Products not fetched');
     });
   });
 });

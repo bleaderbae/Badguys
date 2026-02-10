@@ -177,7 +177,7 @@ export default function ProductClient() {
                       )
 
                       const isSelected = selectedVariant?.selectedOptions?.some(
-                        (opt: any) => opt.name === option.name && opt.value === value
+                        (opt) => opt.name === option.name && opt.value === value
                       )
 
                       return (

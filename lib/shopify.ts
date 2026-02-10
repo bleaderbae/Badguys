@@ -1,4 +1,5 @@
 import { MOCK_SHOP_PRODUCTS, MOCK_PRODUCT_DETAILS, MOCK_CARD_PRODUCTS } from './mockData'
+import { Checkout, ProductEdge, Product } from './types'
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
@@ -35,7 +36,7 @@ export async function ShopifyData(query: string, variables?: Record<string, any>
   }
 }
 
-export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT) {
+export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT): Promise<ProductEdge[]> {
   const query = `
   query products($first: Int!) {
     products(first: $first) {
@@ -73,11 +74,11 @@ export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT) {
   }
 }
 
-export async function getCardProducts() {
+export async function getCardProducts(): Promise<ProductEdge[]> {
   return MOCK_CARD_PRODUCTS
 }
 
-export async function getProduct(handle: string) {
+export async function getProduct(handle: string): Promise<Product | null> {
   if (MOCK_PRODUCT_DETAILS[handle]) {
     return MOCK_PRODUCT_DETAILS[handle]
   }
@@ -135,7 +136,7 @@ export async function getProduct(handle: string) {
   }
 }
 
-export async function createCheckout(id: string, quantity: number) {
+export async function createCheckout(id: string, quantity: number): Promise<Checkout | null> {
   const query = `
     mutation checkoutCreate($variantId: ID!, $quantity: Int!) {
       checkoutCreate(input: {
@@ -174,7 +175,7 @@ export async function createCheckout(id: string, quantity: number) {
 
   const response = await ShopifyData(query, { variantId: id, quantity })
 
-  const checkout = response.data.checkoutCreate.checkout ? response.data.checkoutCreate.checkout : []
+  const checkout = response.data.checkoutCreate.checkout ? response.data.checkoutCreate.checkout : null
 
   return checkout
 }
@@ -318,7 +319,7 @@ export async function customerRecover(email: string) {
   return response.data.customerRecover
 }
 
-export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]) {
+export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]): Promise<Checkout | null> {
   const query = `
     mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
       checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
@@ -363,12 +364,12 @@ export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { vari
     lineItems,
   })
 
-  const checkout = response.data.checkoutLineItemsAdd.checkout ? response.data.checkoutLineItemsAdd.checkout : []
+  const checkout = response.data.checkoutLineItemsAdd.checkout ? response.data.checkoutLineItemsAdd.checkout : null
 
   return checkout
 }
 
-export async function getCheckout(checkoutId: string) {
+export async function getCheckout(checkoutId: string): Promise<Checkout | null> {
   const query = `
   query checkout($checkoutId: ID!) {
     node(id: $checkoutId) {
@@ -413,7 +414,7 @@ export interface UpdateCheckoutLineItem {
   variantQuantity: number;
 }
 
-export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineItem[]) {
+export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineItem[]): Promise<Checkout | null> {
   const formattedLineItems = lineItems.map((item) => {
     return {
       variantId: item.id,
@@ -460,12 +461,12 @@ export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineIt
     checkoutId: id,
   })
 
-  const checkout = response.data.checkoutLineItemsReplace.checkout ? response.data.checkoutLineItemsReplace.checkout : []
+  const checkout = response.data.checkoutLineItemsReplace.checkout ? response.data.checkoutLineItemsReplace.checkout : null
 
   return checkout
 }
 
-export async function checkoutLineItemsRemove(checkoutId: string, lineItemIds: string[]) {
+export async function checkoutLineItemsRemove(checkoutId: string, lineItemIds: string[]): Promise<Checkout | null> {
   const query = `
     mutation checkoutLineItemsRemove($checkoutId: ID!, $lineItemIds: [ID!]!) {
       checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
@@ -510,7 +511,7 @@ export async function checkoutLineItemsRemove(checkoutId: string, lineItemIds: s
     lineItemIds,
   })
 
-  const checkout = response.data.checkoutLineItemsRemove.checkout ? response.data.checkoutLineItemsRemove.checkout : []
+  const checkout = response.data.checkoutLineItemsRemove.checkout ? response.data.checkoutLineItemsRemove.checkout : null
 
   return checkout
 }

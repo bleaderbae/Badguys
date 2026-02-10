@@ -1,4 +1,4 @@
-import { Product, ProductDetail } from './types'
+import { ProductEdge, ProductDetail } from './types'
 
 // Helper to create a mock product node
 const createProductNode = (
@@ -7,7 +7,7 @@ const createProductNode = (
   handle: string,
   price: string,
   imageUrl: string
-): Product => ({
+): ProductEdge => ({
   node: {
     id,
     title,
@@ -31,7 +31,7 @@ const createProductNode = (
 })
 
 // Mock Shop Products (based on ripped data + QA item)
-export const MOCK_SHOP_PRODUCTS: Product[] = [
+export const MOCK_SHOP_PRODUCTS: ProductEdge[] = [
   createProductNode(
     'gid://shopify/Product/qa-test-product',
     'QA Test Product',
@@ -56,7 +56,7 @@ export const MOCK_SHOP_PRODUCTS: Product[] = [
 ]
 
 // Mock Card Products
-export const MOCK_CARD_PRODUCTS: Product[] = [
+export const MOCK_CARD_PRODUCTS: ProductEdge[] = [
   // Include QA Test Product in the Vault/Cards view
   createProductNode(
     'gid://shopify/Product/qa-test-product',

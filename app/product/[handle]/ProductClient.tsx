@@ -26,7 +26,7 @@ export default function ProductClient() {
       try {
         const productData = await getProduct(handle)
         setProduct(productData)
-        if (productData.variants.edges.length > 0) {
+        if (productData && productData.variants.edges.length > 0) {
           setSelectedVariant(productData.variants.edges[0].node)
         }
       } catch (error) {

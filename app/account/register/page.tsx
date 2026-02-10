@@ -19,6 +19,27 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.')
+      setLoading(false)
+      return
+    }
+    if (!/[A-Z]/.test(password)) {
+      setError('Password must contain at least one uppercase letter.')
+      setLoading(false)
+      return
+    }
+    if (!/[0-9]/.test(password)) {
+      setError('Password must contain at least one number.')
+      setLoading(false)
+      return
+    }
+    if (!/[!@#$%^&*]/.test(password)) {
+      setError('Password must contain at least one special character (!@#$%^&*).')
+      setLoading(false)
+      return
+    }
+
     try {
       const data = await customerCreate(email, password, firstName, lastName)
 
@@ -51,8 +72,9 @@ export default function RegisterPage() {
 
         <div className="grid grid-cols-2 gap-4">
             <div>
-            <label className="block text-sm font-bold mb-2">FIRST NAME</label>
+            <label htmlFor="firstName" className="block text-sm font-bold mb-2">FIRST NAME</label>
             <input
+                id="firstName"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -62,8 +84,9 @@ export default function RegisterPage() {
             </div>
 
             <div>
-            <label className="block text-sm font-bold mb-2">LAST NAME</label>
+            <label htmlFor="lastName" className="block text-sm font-bold mb-2">LAST NAME</label>
             <input
+                id="lastName"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -74,8 +97,9 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-bold mb-2">EMAIL</label>
+          <label htmlFor="email" className="block text-sm font-bold mb-2">EMAIL</label>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -85,8 +109,9 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-bold mb-2">PASSWORD</label>
+          <label htmlFor="password" className="block text-sm font-bold mb-2">PASSWORD</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

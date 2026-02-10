@@ -6,11 +6,11 @@ import { usePathname } from 'next/navigation'
 import StartMenu from './StartMenu'
 import DesktopIcons from './DesktopIcons'
 import WindowFrame from './WindowFrame'
+import TaskbarClock from './TaskbarClock'
 
 export default function DesktopShell({ children }: { children: React.ReactNode }) {
   const [startOpen, setStartOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
   const pathname = usePathname()
 
   const startButtonRef = useRef<HTMLButtonElement>(null)
@@ -20,12 +20,6 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   useEffect(() => {
     setIsMinimized(false)
   }, [pathname])
-
-  // Update clock
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
 
   // Close start menu when clicking outside
   useEffect(() => {
@@ -138,9 +132,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
             )}
         </div>
 
-        <div className="bg-gray-800 border-2 border-gray-600 border-b-gray-900 border-r-gray-900 px-4 py-1 shadow-inner text-sm font-mono text-gray-300">
-          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
+        <TaskbarClock />
       </div>
 
       {/* StartMenu */}

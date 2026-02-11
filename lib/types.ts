@@ -65,3 +65,8 @@ export interface ProductEdge {
 }
 
 export type ProductDetail = Product;
+
+export interface CheckoutLineItemInput {
+  variantId: string;
+  quantity: number;
+}

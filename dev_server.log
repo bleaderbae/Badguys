@@ -7,10 +7,10 @@
    - Network:      http://192.168.0.2:3000
 
  ✓ Starting...
- ✓ Ready in 2.1s
+ ✓ Ready in 2.2s
  ○ Compiling /product/[handle] ...
- ✓ Compiled /product/[handle] in 13.1s (1485 modules)
- ✓ Compiled in 1215ms (670 modules)
+ ✓ Compiled /product/[handle] in 13.4s (1485 modules)
+ ✓ Compiled in 1162ms (670 modules)
 Error fetching products, using mock data: Error: Products not fetched
     at ShopifyData (lib/shopify.ts:35:11)
     at async getAllProducts (lib/shopify.ts:67:22)
@@ -22,7 +22,7 @@ Error fetching products, using mock data: Error: Products not fetched
   36 |   }
   37 | }
   38 |
- GET /product/qa-test-product 200 in 16733ms
+ GET /product/qa-test-product 200 in 16990ms
  ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
 [TypeError: fetch failed] {
   [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
@@ -41,4 +41,4 @@ Error fetching products, using mock data: Error: Products not fetched
   }
 }
  ○ Compiling /_error ...
- ✓ Compiled /_error in 3s (1799 modules)
+ ✓ Compiled /_error in 3.1s (1799 modules)

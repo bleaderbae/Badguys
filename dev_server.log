@@ -7,14 +7,13 @@
    - Network:      http://192.168.0.2:3000
 
  ✓ Starting...
- ✓ Ready in 2.1s
- ○ Compiling /product/[handle] ...
- ✓ Compiled /product/[handle] in 13.1s (1485 modules)
- ✓ Compiled in 1215ms (670 modules)
+ ✓ Ready in 2.2s
+ ○ Compiling /shop ...
+ ✓ Compiled /shop in 12.1s (1490 modules)
 Error fetching products, using mock data: Error: Products not fetched
     at ShopifyData (lib/shopify.ts:35:11)
     at async getAllProducts (lib/shopify.ts:67:22)
-    at async Object.generateStaticParams (app/product/[handle]/page.tsx:6:22)
+    at async ShopPage (app/shop/page.tsx:7:20)
   33 |     return data
   34 |   } catch (error) {
 > 35 |     throw new Error("Products not fetched")
@@ -22,7 +21,19 @@ Error fetching products, using mock data: Error: Products not fetched
   36 |   }
   37 | }
   38 |
- GET /product/qa-test-product 200 in 16733ms
+Error fetching shop info: Error: Products not fetched
+    at ShopifyData (lib/shopify.ts:35:11)
+    at async getShopInfo (lib/shopify.ts:194:22)
+    at async ShopPage (app/shop/page.tsx:8:20)
+  33 |     return data
+  34 |   } catch (error) {
+> 35 |     throw new Error("Products not fetched")
+     |           ^
+  36 |   }
+  37 | }
+  38 |
+ ✓ Compiled in 1706ms (671 modules)
+ GET /shop 200 in 13875ms
  ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
 [TypeError: fetch failed] {
   [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
@@ -32,13 +43,5 @@ Error fetching products, using mock data: Error: Products not fetched
     hostname: 'via.placeholder.com'
   }
 }
-[TypeError: fetch failed] {
-  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
-    errno: -3001,
-    code: 'EAI_AGAIN',
-    syscall: 'getaddrinfo',
-    hostname: 'via.placeholder.com'
-  }
-}
  ○ Compiling /_error ...
- ✓ Compiled /_error in 3s (1799 modules)
+ ✓ Compiled /_error in 4.8s (1804 modules)

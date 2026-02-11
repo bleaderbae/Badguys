@@ -86,6 +86,7 @@ describe('Header Component', () => {
 
     // Initial state: Mobile menu should not be visible
     expect(screen.queryByText('CART (0)')).not.toBeInTheDocument();
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
     // Open menu
     fireEvent.click(menuButton);
@@ -93,12 +94,34 @@ describe('Header Component', () => {
     // Now mobile menu items should be visible
     expect(screen.getByText('CART (0)')).toBeInTheDocument();
 
-    // Close menu
+    // Check updated aria attributes
     const closeButton = screen.getByLabelText('Close menu');
+    expect(closeButton).toHaveAttribute('aria-expanded', 'true');
+
+    // Close menu
     fireEvent.click(closeButton);
 
     // Should be closed again
     expect(screen.queryByText('CART (0)')).not.toBeInTheDocument();
+    const menuButtonAgain = screen.getByLabelText('Open menu');
+    expect(menuButtonAgain).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('renders all navigation links in mobile menu', () => {
+    render(<Header />);
+    const menuButton = screen.getByLabelText('Open menu');
+    fireEvent.click(menuButton);
+
+    const links = ['HOME', 'SHOP', 'ABOUT', 'CONTACT'];
+
+    links.forEach(linkText => {
+      // Should find 2 elements: one desktop (hidden), one mobile (visible)
+      const foundLinks = screen.getAllByText(linkText);
+      expect(foundLinks).toHaveLength(2);
+    });
+
+    // Check specific mobile cart link
+    expect(screen.getByText('CART (0)')).toBeInTheDocument();
   });
 
   it('closes mobile menu when a link is clicked', () => {

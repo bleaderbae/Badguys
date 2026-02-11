@@ -1,5 +1,5 @@
 import { MOCK_SHOP_PRODUCTS, MOCK_PRODUCT_DETAILS, MOCK_CARD_PRODUCTS } from './mockData'
-import { Checkout, ProductEdge, Product } from './types'
+import { Checkout, ProductEdge, Product, CheckoutLineItemInput } from './types'
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
@@ -319,7 +319,7 @@ export async function customerRecover(email: string) {
   return response.data.customerRecover
 }
 
-export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]): Promise<Checkout | null> {
+export async function checkoutLineItemsAdd(checkoutId: string, lineItems: CheckoutLineItemInput[]): Promise<Checkout | null> {
   const query = `
     mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
       checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
@@ -415,7 +415,7 @@ export interface UpdateCheckoutLineItem {
 }
 
 export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineItem[]): Promise<Checkout | null> {
-  const formattedLineItems = lineItems.map((item) => {
+  const formattedLineItems: CheckoutLineItemInput[] = lineItems.map((item) => {
     return {
       variantId: item.id,
       quantity: item.variantQuantity

@@ -38,6 +38,21 @@ describe('RegisterPage', () => {
     expect(screen.getByLabelText('PASSWORD')).toBeInTheDocument()
   })
 
+  it('shows error for invalid email', async () => {
+    render(<RegisterPage />)
+    fireEvent.change(screen.getByLabelText('FIRST NAME'), { target: { value: 'John' } })
+    fireEvent.change(screen.getByLabelText('LAST NAME'), { target: { value: 'Doe' } })
+    // 'test@example' passes browser type="email" validation (which allows intranet emails)
+    // but fails our stricter regex which requires a TLD
+    fireEvent.change(screen.getByLabelText('EMAIL'), { target: { value: 'test@example' } })
+    fireEvent.change(screen.getByLabelText('PASSWORD'), { target: { value: 'Password123!' } })
+
+    fireEvent.click(screen.getByRole('button', { name: 'REGISTER' }))
+
+    expect(await screen.findByText('Please enter a valid email address.')).toBeInTheDocument()
+    expect(customerCreate).not.toHaveBeenCalled()
+  })
+
   it('shows error for short password', async () => {
     render(<RegisterPage />)
     fillForm('short')

@@ -19,6 +19,35 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
+    const cleanFirstName = firstName.trim()
+    const cleanLastName = lastName.trim()
+    const cleanEmail = email.trim()
+
+    // 1. Input Length Limits
+    if (cleanFirstName.length > 50 || cleanLastName.length > 50) {
+      setError('First and Last names must be 50 characters or less.')
+      setLoading(false)
+      return
+    }
+    if (cleanEmail.length > 254) {
+      setError('Email is too long.')
+      setLoading(false)
+      return
+    }
+    if (password.length > 100) {
+      setError('Password is too long (max 100 characters).')
+      setLoading(false)
+      return
+    }
+
+    // 2. Email Validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(cleanEmail)) {
+      setError('Please enter a valid email address.')
+      setLoading(false)
+      return
+    }
+
     if (password.length < 8) {
       setError('Password must be at least 8 characters long.')
       setLoading(false)
@@ -41,7 +70,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const data = await customerCreate(email, password, firstName, lastName)
+      const data = await customerCreate(cleanEmail, password, cleanFirstName, cleanLastName)
 
       if (data?.customerUserErrors?.length > 0) {
         setError(data.customerUserErrors[0].message)
@@ -77,6 +106,7 @@ export default function RegisterPage() {
                 id="firstName"
                 type="text"
                 value={firstName}
+                maxLength={50}
                 onChange={(e) => setFirstName(e.target.value)}
                 className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"
                 required
@@ -89,6 +119,7 @@ export default function RegisterPage() {
                 id="lastName"
                 type="text"
                 value={lastName}
+                maxLength={50}
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"
                 required
@@ -102,6 +133,7 @@ export default function RegisterPage() {
             id="email"
             type="email"
             value={email}
+            maxLength={254}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"
             required
@@ -114,6 +146,7 @@ export default function RegisterPage() {
             id="password"
             type="password"
             value={password}
+            maxLength={100}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"
             required

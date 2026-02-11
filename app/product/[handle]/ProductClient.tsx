@@ -8,14 +8,16 @@ import { getProduct } from '@/lib/shopify'
 import { ProductDetail, Variant } from '@/lib/types'
 import { useCart } from '@/components/CartContext'
 
-export default function ProductClient() {
+export default function ProductClient({ product: initialProduct }: { product?: ProductDetail | null }) {
   const params = useParams()
   const handle = params.handle as string
   const { addToCart } = useCart()
 
-  const [product, setProduct] = useState<ProductDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null)
+  const [product, setProduct] = useState<ProductDetail | null>(initialProduct || null)
+  const [loading, setLoading] = useState(!initialProduct)
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
+    initialProduct?.variants?.edges[0]?.node || null
+  )
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
@@ -23,6 +25,8 @@ export default function ProductClient() {
 
   useEffect(() => {
     async function fetchProduct() {
+      if (product) return
+
       try {
         const productData = await getProduct(handle)
         setProduct(productData)
@@ -36,10 +40,10 @@ export default function ProductClient() {
       }
     }
 
-    if (handle) {
+    if (handle && !product) {
       fetchProduct()
     }
-  }, [handle])
+  }, [handle, product])
 
   // Update selected image when variant changes
   useEffect(() => {

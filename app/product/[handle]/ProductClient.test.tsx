@@ -33,6 +33,7 @@ jest.mock('framer-motion', () => ({
 
 const mockProduct = {
   id: 'gid://shopify/Product/1',
+  handle: 'test-product',
   title: 'Test Product',
   description: 'Test Description',
   options: [
@@ -74,10 +75,33 @@ const mockProduct = {
   }
 };
 
-describe('ProductClient Accessibility', () => {
+describe('ProductClient', () => {
   beforeEach(() => {
+    (getProduct as jest.Mock).mockClear();
     (getProduct as jest.Mock).mockResolvedValue(mockProduct);
     (useCart as jest.Mock).mockReturnValue({ addToCart: jest.fn() });
+  });
+
+  it('fetches product when not provided as prop', async () => {
+    render(<ProductClient />);
+
+    // Wait for product to load
+    await waitFor(() => expect(screen.getByText('Test Product')).toBeInTheDocument());
+
+    // Verify it fetched
+    expect(getProduct).toHaveBeenCalledWith('test-product');
+  });
+
+  it('skips fetch when product is provided as prop', async () => {
+    // Pass mockProduct directly as prop
+    // @ts-ignore
+    render(<ProductClient product={mockProduct} />);
+
+    // Should render immediately
+    expect(screen.getByText('Test Product')).toBeInTheDocument();
+
+    // Verify getProduct was NOT called
+    expect(getProduct).not.toHaveBeenCalled();
   });
 
   it('renders with accessibility attributes', async () => {
@@ -103,17 +127,6 @@ describe('ProductClient Accessibility', () => {
     expect(sizeS).toHaveClass('focus-visible:ring-2');
 
     // 3. Image Thumbnails
-    // The thumbnails are buttons that contain images.
-    // We expect 2 thumbnails because mockProduct has 2 images.
-    // Note: The main image is NOT a button, only the thumbnails list below it.
-    // But verify the thumbnails exist first.
-    // The implementation maps images to buttons:
-    // {images.map((image, index) => ( <button ...><Image ... /></button> ))}
-
-    // We can select them by class or structure, but better by what we expect to add: aria-label.
-    // Since they don't have aria-label yet, we might need to find them another way to assert they *don't* have it (or just assert expectation failure).
-
-    // For this test, we are asserting PRESENCE. So we expect this to fail.
     const thumbnail1 = screen.getByLabelText('View image 1 of 2');
     const thumbnail2 = screen.getByLabelText('View image 2 of 2');
 

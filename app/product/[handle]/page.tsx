@@ -1,4 +1,4 @@
-import { getAllProducts } from '@/lib/shopify'
+import { getAllProducts, getProduct } from '@/lib/shopify'
 import ProductClient from './ProductClient'
 
 export async function generateStaticParams() {
@@ -18,6 +18,12 @@ export async function generateStaticParams() {
   }
 }
 
-export default function ProductPage() {
-  return <ProductClient />
+interface Props {
+  params: Promise<{ handle: string }>
+}
+
+export default async function ProductPage(props: Props) {
+  const params = await props.params
+  const product = await getProduct(params.handle)
+  return <ProductClient product={product} />
 }

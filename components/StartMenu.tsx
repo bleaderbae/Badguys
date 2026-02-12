@@ -20,30 +20,32 @@ export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
         <span className="text-white font-bold font-mono">User</span>
       </div>
       <div className="flex-1 py-2">
-        <MenuLink href="/profile" label="My Account" onClick={onClose} />
-        <MenuLink href="/cart" label="Cart" onClick={onClose} />
-        <MenuLink href="/settings" label="Settings" onClick={onClose} />
+        <MenuLink href="/profile" label="My Account" icon="👤" onClick={onClose} />
+        <MenuLink href="/cart" label="Cart" icon="🛒" onClick={onClose} />
+        <MenuLink href="/settings" label="Settings" icon="⚙️" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
-        <MenuLink href="/shop/golf" label="Golf Drop" onClick={onClose} />
-        <MenuLink href="/shop/samurai" label="Samurai Drop" onClick={onClose} />
-        <MenuLink href="/shop/all" label="Shop Network" onClick={onClose} />
-        <MenuLink href="/product" label="The Vault" onClick={onClose} />
+        <MenuLink href="/shop/golf" label="Golf Drop" icon="⛳" onClick={onClose} />
+        <MenuLink href="/shop/samurai" label="Samurai Drop" icon="⚔️" onClick={onClose} />
+        <MenuLink href="/shop/all" label="Shop Network" icon="🌐" onClick={onClose} />
+        <MenuLink href="/product" label="The Vault" icon="⚰️" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
-        <MenuLink href="/about" label="About System" onClick={onClose} />
+        <MenuLink href="/about" label="About System" icon="💻" onClick={onClose} />
+        <MenuLink href="/contact" label="Contact Admin" icon="📧" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
       </div>
     </div>
   )
 }
 
-function MenuLink({ href, label, onClick }: { href: string; label: string; onClick: () => void }) {
+function MenuLink({ href, label, icon, onClick }: { href: string; label: string; icon?: string; onClick: () => void }) {
   return (
     <Link 
       href={href} 
-      className="block px-4 py-2 text-white hover:bg-blue-600 font-mono text-sm"
+      className="block px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none font-mono text-sm flex items-center gap-3 transition-colors"
       onClick={onClick}
     >
-      {label}
+      {icon && <span aria-hidden="true" className="text-lg w-6 text-center">{icon}</span>}
+      <span>{label}</span>
     </Link>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react'
 import { createCheckout, checkoutLineItemsAdd, getCheckout, checkoutLineItemsRemove } from '@/lib/shopify'
 import { MOCK_PRODUCT_DETAILS } from '@/lib/mockData'
 import { LineItem, Variant, ProductDetail } from '@/lib/types'
@@ -25,6 +25,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isInitializing, setIsInitializing] = useState(true)
 
+  const fetchCheckout = useCallback(async (id: string) => {
+    try {
+      const checkout = await getCheckout(id)
+      if (checkout) {
+        setCheckoutId(checkout.id)
+        setCheckoutUrl(checkout.webUrl)
+        setCartLines(checkout.lineItems?.edges.map((edge) => edge.node) || [])
+      } else {
+        // Checkout expired or invalid
+        localStorage.removeItem('bgc_checkout_id')
+        setCheckoutId(null)
+      }
+    } catch (error) {
+      console.error('Error fetching checkout:', error)
+      localStorage.removeItem('bgc_checkout_id')
+      setCheckoutId(null)
+    }
+  }, [])
+
   // Load checkout from local storage
   useEffect(() => {
     const initializeCart = async () => {
@@ -47,28 +66,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
 
     initializeCart()
-  }, [])
+  }, [fetchCheckout])
 
-  const fetchCheckout = async (id: string) => {
-    try {
-      const checkout = await getCheckout(id)
-      if (checkout) {
-        setCheckoutId(checkout.id)
-        setCheckoutUrl(checkout.webUrl)
-        setCartLines(checkout.lineItems?.edges.map((edge) => edge.node) || [])
-      } else {
-        // Checkout expired or invalid
-        localStorage.removeItem('bgc_checkout_id')
-        setCheckoutId(null)
-      }
-    } catch (error) {
-      console.error('Error fetching checkout:', error)
-      localStorage.removeItem('bgc_checkout_id')
-      setCheckoutId(null)
-    }
-  }
-
-  const addToLocalCart = (variantId: string, quantity: number) => {
+  const addToLocalCart = useCallback((variantId: string, quantity: number) => {
       // Find variant in mocks
       let foundVariant: Variant | null = null;
       let foundProduct: ProductDetail | null = null;
@@ -115,17 +115,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
               return newLines;
           });
       }
-  }
+  }, [])
 
-  const removeFromLocalCart = (lineItemId: string) => {
+  const removeFromLocalCart = useCallback((lineItemId: string) => {
       setCartLines(prev => {
           const newLines = prev.filter(item => item.id !== lineItemId);
           localStorage.setItem('bgc_local_cart', JSON.stringify(newLines));
           return newLines;
       });
-  }
+  }, [])
 
-  const addToCart = async (variantId: string, quantity: number) => {
+  const addToCart = useCallback(async (variantId: string, quantity: number) => {
     setIsLoading(true)
     try {
       // Attempt Shopify cart first
@@ -165,9 +165,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [checkoutId, addToLocalCart])
 
-  const removeFromCart = async (lineItemId: string) => {
+  const removeFromCart = useCallback(async (lineItemId: string) => {
     setIsLoading(true)
     try {
         if (checkoutId) {
@@ -192,12 +192,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } finally {
         setIsLoading(false)
     }
-  }
+  }, [checkoutId, removeFromLocalCart])
 
-  const cartCount = cartLines.reduce((acc, item) => acc + item.quantity, 0)
+  const cartCount = useMemo(() => {
+    return cartLines.reduce((acc, item) => acc + item.quantity, 0)
+  }, [cartLines])
+
+  const value = useMemo(() => ({
+    checkoutId,
+    checkoutUrl,
+    cartLines,
+    cartCount,
+    addToCart,
+    removeFromCart,
+    isLoading,
+    isInitializing
+  }), [checkoutId, checkoutUrl, cartLines, cartCount, addToCart, removeFromCart, isLoading, isInitializing])
 
   return (
-    <CartContext.Provider value={{ checkoutId, checkoutUrl, cartLines, cartCount, addToCart, removeFromCart, isLoading, isInitializing }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   )

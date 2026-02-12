@@ -17,8 +17,36 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
+    const cleanEmail = email.trim()
+
+    // Validation
+    if (cleanEmail.length > 254) {
+      setError('Email is too long.')
+      setLoading(false)
+      return
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(cleanEmail)) {
+      setError('Please enter a valid email address.')
+      setLoading(false)
+      return
+    }
+
+    if (password.length > 100) {
+      setError('Password is too long (max 100 characters).')
+      setLoading(false)
+      return
+    }
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.')
+      setLoading(false)
+      return
+    }
+
     try {
-      const data = await customerAccessTokenCreate(email, password)
+      const data = await customerAccessTokenCreate(cleanEmail, password)
 
       if (data?.customerUserErrors?.length > 0) {
         setError(data.customerUserErrors[0].message)
@@ -48,9 +76,11 @@ export default function LoginPage() {
         )}
 
         <div>
-          <label className="block text-sm font-bold mb-2">EMAIL</label>
+          <label htmlFor="email" className="block text-sm font-bold mb-2">EMAIL</label>
           <input
+            id="email"
             type="email"
+            maxLength={254}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"
@@ -59,9 +89,11 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-bold mb-2">PASSWORD</label>
+          <label htmlFor="password" className="block text-sm font-bold mb-2">PASSWORD</label>
           <input
+            id="password"
             type="password"
+            maxLength={100}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-bgc-gray border border-bgc-gray-light p-3 focus:border-bgc-red outline-none text-white"

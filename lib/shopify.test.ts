@@ -146,7 +146,11 @@ describe('Shopify API Handling', () => {
       const mockCheckout = {
         data: {
           checkoutCreate: {
-            checkout: { id: 'checkout-1' }
+            checkout: {
+              id: 'checkout-1',
+              webUrl: 'https://checkout.url',
+              lineItems: { edges: [] }
+            }
           }
         }
       };
@@ -156,6 +160,12 @@ describe('Shopify API Handling', () => {
 
       const result = await createCheckout('variant-1', 1);
       expect(result).toEqual(mockCheckout.data.checkoutCreate.checkout);
+
+      // Verify correct mutation variables
+      const lastCall = (global.fetch as jest.Mock).mock.calls[0];
+      const body = JSON.parse(lastCall[1].body);
+      expect(body.variables).toEqual({ variantId: 'variant-1', quantity: 1 });
+      expect(body.query).toContain('mutation checkoutCreate');
     });
 
     it('should return null when checkout is null in response', async () => {
@@ -172,6 +182,12 @@ describe('Shopify API Handling', () => {
 
       const result = await createCheckout('variant-1', 1);
       expect(result).toBeNull();
+    });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+
+      await expect(createCheckout('variant-1', 1)).rejects.toThrow('Products not fetched');
     });
   });
 

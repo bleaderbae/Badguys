@@ -1,7 +1,19 @@
+'use client'
+
+import { memo } from 'react'
 import DesktopIcon from '@/components/DesktopIcon'
 import CartDesktopIcon from '@/components/CartDesktopIcon'
 
-export default function DesktopIcons() {
+/**
+ * DesktopIcons
+ *
+ * Performance optimization:
+ * This component is memoized to prevent unnecessary re-renders when the parent
+ * DesktopShell updates (e.g. toggling Start Menu, window minimizing).
+ * Since the list of icons is static, we don't need to re-render it unless
+ * the component is unmounted/remounted.
+ */
+function DesktopIcons() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4 md:gap-8 md:p-8 items-start justify-items-center animate-fade-in">
       <DesktopIcon label="My Computer" href="/about" icon="💻" />
@@ -15,3 +27,5 @@ export default function DesktopIcons() {
     </div>
   )
 }
+
+export default memo(DesktopIcons)

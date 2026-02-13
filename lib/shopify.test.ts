@@ -35,6 +35,13 @@ describe('Shopify API Handling', () => {
       await expect(ShopifyData('some query')).rejects.toThrow('Products not fetched');
     });
 
+    it('should throw "Products not fetched" when response is not valid JSON', async () => {
+       (global.fetch as jest.Mock).mockResolvedValue({
+         json: jest.fn().mockRejectedValue(new Error('Invalid JSON')),
+       });
+       await expect(ShopifyData('some query')).rejects.toThrow('Products not fetched');
+    });
+
     it('should return data when API request succeeds', async () => {
       const mockData = { data: { products: [] } };
       (global.fetch as jest.Mock).mockResolvedValue({
@@ -235,6 +242,11 @@ describe('Shopify API Handling', () => {
       const result = await customerAccessTokenCreate('test@example.com', 'password');
       expect(result).toEqual(mockToken.data.customerAccessTokenCreate);
     });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(customerAccessTokenCreate('test@example.com', 'password')).rejects.toThrow('Products not fetched');
+    });
   });
 
   describe('customerCreate', () => {
@@ -254,6 +266,11 @@ describe('Shopify API Handling', () => {
       const result = await customerCreate('test@example.com', 'password');
       expect(result).toEqual(mockCustomer.data.customerCreate);
     });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(customerCreate('test@example.com', 'password')).rejects.toThrow('Products not fetched');
+    });
   });
 
   describe('getCustomer', () => {
@@ -269,6 +286,11 @@ describe('Shopify API Handling', () => {
 
       const result = await getCustomer('token');
       expect(result).toEqual(mockCustomer.data.customer);
+    });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(getCustomer('token')).rejects.toThrow('Products not fetched');
     });
   });
 
@@ -287,6 +309,11 @@ describe('Shopify API Handling', () => {
 
       const result = await customerRecover('test@example.com');
       expect(result).toEqual(mockRecover.data.customerRecover);
+    });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(customerRecover('test@example.com')).rejects.toThrow('Products not fetched');
     });
   });
 
@@ -322,6 +349,11 @@ describe('Shopify API Handling', () => {
       const result = await checkoutLineItemsAdd('checkout-1', [{ variantId: 'v1', quantity: 1 }]);
       expect(result).toBeNull();
     });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(checkoutLineItemsAdd('checkout-1', [{ variantId: 'v1', quantity: 1 }])).rejects.toThrow('Products not fetched');
+    });
   });
 
   describe('getCheckout', () => {
@@ -351,6 +383,11 @@ describe('Shopify API Handling', () => {
 
       const result = await getCheckout('checkout-1');
       expect(result).toBeNull();
+    });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(getCheckout('checkout-1')).rejects.toThrow('Products not fetched');
     });
   });
 
@@ -447,6 +484,11 @@ describe('Shopify API Handling', () => {
 
       const result = await checkoutLineItemsRemove('checkout-1', ['line-item-1']);
       expect(result).toBeNull();
+    });
+
+    it('should throw "Products not fetched" when API request fails', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+      await expect(checkoutLineItemsRemove('checkout-1', ['line-item-1'])).rejects.toThrow('Products not fetched');
     });
   });
 });

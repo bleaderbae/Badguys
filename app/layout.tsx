@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, VT323 } from 'next/font/google'
+import { headers } from 'next/headers'
 import './globals.css'
 import ClientLayout from '@/components/ClientLayout'
 import { CartProvider } from '@/components/CartContext'
@@ -13,14 +14,16 @@ export const metadata: Metadata = {
   keywords: ['clothing', 'lifestyle', 'mma', 'streetwear', 'bad guys club'],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const nonce = (await headers()).get('x-nonce') || undefined
+
   return (
     <html lang="en" className={`${inter.variable} ${vt323.variable}`}>
-      <body className="min-h-screen bg-black text-green-500">
+      <body className="min-h-screen bg-black text-green-500" nonce={nonce}>
         <CartProvider>
           <ClientLayout>
             {children}

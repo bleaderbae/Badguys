@@ -4,16 +4,10 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuIcon, CloseIcon, CartIcon } from './Icons'
+import { NAV_LINKS } from '@/lib/constants'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  const navLinks = [
-    { href: '/', label: 'HOME' },
-    { href: '/shop', label: 'SHOP' },
-    { href: '/about', label: 'ABOUT' },
-    { href: '/contact', label: 'CONTACT' },
-  ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-bgc-black/95 backdrop-blur-sm border-b border-bgc-gray-light">
@@ -32,7 +26,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -83,7 +77,7 @@ export default function Header() {
             className="md:hidden bg-bgc-gray border-t border-bgc-gray-light"
           >
             <div className="px-4 py-6 space-y-4">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

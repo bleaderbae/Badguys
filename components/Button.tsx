@@ -21,7 +21,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
 
-  const baseStyles = "px-8 py-4 font-bold text-lg rounded-none transition-colors inline-block text-center cursor-pointer"
+  const baseStyles = "px-8 py-4 font-bold text-lg rounded-none transition-colors inline-block text-center cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-bgc-white focus:outline-none"
 
   const variants = {
     primary: "bg-bgc-red hover:bg-bgc-red-dark text-white",

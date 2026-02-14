@@ -5,16 +5,18 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MenuIcon, CloseIcon, CartIcon } from './Icons'
 import { NAV_LINKS } from '@/lib/constants'
+import { useCart } from './CartContext'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { cartCount } = useCart()
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-bgc-black/95 backdrop-blur-sm border-b border-bgc-gray-light">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bgc-red">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="text-2xl font-black tracking-tighter"
@@ -30,23 +32,25 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-bold text-gray-400 hover:text-white transition-colors relative group"
+                className="text-sm font-bold text-gray-400 hover:text-white transition-colors relative group rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bgc-red"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-bgc-red group-hover:w-full transition-all duration-300"></span>
               </Link>
             ))}
 
-            <Link href="/cart" aria-label="View cart, 0 items">
+            <Link href="/cart" aria-label={`View cart, ${cartCount} items`} className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bgc-red">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative p-2 inline-block"
               >
                 <CartIcon className="w-6 h-6" aria-hidden="true" />
-                <span className="absolute -top-1 -right-1 bg-bgc-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  0
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-bgc-red text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </motion.div>
             </Link>
           </div>
@@ -92,7 +96,7 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-lg font-bold text-gray-400 hover:text-white transition-colors"
               >
-                CART (0)
+                CART ({cartCount})
               </Link>
             </div>
           </motion.div>

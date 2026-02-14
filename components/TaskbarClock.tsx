@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
 /**
  * TaskbarClock
@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
  * This component isolates the clock state (which updates every second)
  * to prevent the entire DesktopShell layout from re-rendering unnecessarily.
  */
-export default function TaskbarClock() {
+function TaskbarClock() {
   const [currentTime, setCurrentTime] = useState<Date | null>(null)
 
   useEffect(() => {
@@ -34,3 +34,5 @@ export default function TaskbarClock() {
     </div>
   )
 }
+
+export default memo(TaskbarClock)

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { memo } from 'react'
 import { useCart } from './CartContext'
 
 interface StartMenuProps {
@@ -8,7 +9,7 @@ interface StartMenuProps {
   onClose: () => void
 }
 
-export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
+function StartMenu({ isOpen, onClose }: StartMenuProps) {
   const { cartCount } = useCart()
 
   if (!isOpen) return null
@@ -57,3 +58,5 @@ function MenuLink({ href, label, icon, badge, onClick }: { href: string; label: 
     </Link>
   )
 }
+
+export default memo(StartMenu)

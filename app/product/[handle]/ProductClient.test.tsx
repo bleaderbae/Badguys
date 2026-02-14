@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import ProductClient from './ProductClient';
 import { getProduct } from '@/lib/shopify';
 import { useCart } from '@/components/CartContext';
+import { ProductDetail } from '@/lib/types';
 
 // Mock dependencies
 jest.mock('next/navigation', () => ({
@@ -31,11 +32,14 @@ jest.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
-const mockProduct = {
+const mockProduct: ProductDetail = {
   id: 'gid://shopify/Product/1',
   handle: 'test-product',
   title: 'Test Product',
   description: 'Test Description',
+  priceRange: {
+    minVariantPrice: { amount: '10.00', currencyCode: 'USD' }
+  },
   options: [
     { id: 'opt1', name: 'Size', values: ['S', 'M'] },
   ],
@@ -94,7 +98,6 @@ describe('ProductClient', () => {
 
   it('skips fetch when product is provided as prop', async () => {
     // Pass mockProduct directly as prop
-    // @ts-ignore
     render(<ProductClient product={mockProduct} />);
 
     // Should render immediately

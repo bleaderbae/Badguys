@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react'
 import { createCheckout, checkoutLineItemsAdd, getCheckout, checkoutLineItemsRemove } from '@/lib/shopify'
-import { MOCK_PRODUCT_DETAILS } from '@/lib/mockData'
+import { MOCK_VARIANT_MAP } from '@/lib/mockData'
 import { LineItem, Variant, ProductDetail } from '@/lib/types'
 
 interface CartContextType {
@@ -70,18 +70,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToLocalCart = useCallback((variantId: string, quantity: number) => {
       // Find variant in mocks
-      let foundVariant: Variant | null = null;
-      let foundProduct: ProductDetail | null = null;
-
-      for (const handle in MOCK_PRODUCT_DETAILS) {
-          const product = MOCK_PRODUCT_DETAILS[handle];
-          const variant = product.variants?.edges.find(e => e.node.id === variantId)?.node;
-          if (variant) {
-              foundVariant = variant;
-              foundProduct = product;
-              break;
-          }
-      }
+      const entry = MOCK_VARIANT_MAP[variantId];
+      const foundVariant = entry?.variant;
+      const foundProduct = entry?.product;
 
       if (foundVariant && foundProduct) {
           setCartLines(prev => {

@@ -71,9 +71,19 @@ describe('Shopify API Handling', () => {
           body: JSON.stringify({
             query: 'some query',
             variables: { var1: 'val1' }
-          })
+          }),
+          signal: expect.any(AbortSignal)
         })
       );
+    });
+
+    it('should log warning and throw generic error when request is aborted', async () => {
+      const abortError = new Error('The user aborted a request.');
+      abortError.name = 'AbortError';
+      (global.fetch as jest.Mock).mockRejectedValue(abortError);
+
+      await expect(ShopifyData('some query')).rejects.toThrow('Products not fetched');
+      expect(console.warn).toHaveBeenCalledWith('Request to Shopify API timed out');
     });
   });
 

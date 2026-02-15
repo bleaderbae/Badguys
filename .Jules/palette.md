@@ -11,3 +11,7 @@
 ## 2024-05-22 - Focus State Synchronization
 **Learning:** Keyboard users often miss out on hover effects (like zoom or color change) if focus styles are only applied to the container. By moving the `group` class to the focusable container (e.g., `Link`) and using `group-focus` on children, we can synchronize hover and focus effects.
 **Action:** When wrapping a card in a `Link`, apply `group` to the `Link` and mirror `group-hover` styles with `group-focus` on child elements.
+
+## 2026-02-09 - OS Menu Animation Pattern
+**Learning:** For OS-like menu interactions (like Start Menu), decoupling visibility state (in parent) from animation logic (in child via AnimatePresence) provides the smoothest 'desktop-like' feel without complex state management.
+**Action:** Use AnimatePresence in container components (DesktopShell) and motion primitives in leaf components (StartMenu).

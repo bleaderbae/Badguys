@@ -8,6 +8,8 @@ const DEFAULT_PRODUCT_LIMIT = 25
 
 export async function ShopifyData(query: string, variables?: Record<string, any>) {
   const URL = `https://${domain}/api/2024-01/graphql.json`
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000)
 
   const body: { query: string; variables?: Record<string, any> } = { query }
   if (variables) {
@@ -23,6 +25,7 @@ export async function ShopifyData(query: string, variables?: Record<string, any>
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
+    signal: controller.signal,
   }
 
   try {
@@ -31,8 +34,13 @@ export async function ShopifyData(query: string, variables?: Record<string, any>
     })
 
     return data
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.warn('Request to Shopify API timed out')
+    }
     throw new Error("Products not fetched")
+  } finally {
+    clearTimeout(timeoutId)
   }
 }
 

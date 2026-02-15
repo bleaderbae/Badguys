@@ -72,7 +72,7 @@ describe('Header Component', () => {
 
   it('renders the cart icon with correct count', () => {
     render(<Header />);
-    // Check for aria-label
+    // Check for aria-label (expecting 2 items from mock)
     const cartLink = screen.getByLabelText(/View cart, 2 items/i);
     expect(cartLink).toBeInTheDocument();
     expect(cartLink).toHaveAttribute('href', '/cart');

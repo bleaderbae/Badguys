@@ -117,6 +117,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const addToCart = useCallback(async (variantId: string, quantity: number) => {
+    if (quantity <= 0 || quantity > 10000) {
+      console.warn("Invalid quantity in addToCart:", quantity);
+      return;
+    }
+
     setIsLoading(true)
     try {
       // Attempt Shopify cart first

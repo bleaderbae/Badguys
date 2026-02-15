@@ -2,13 +2,14 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { memo } from 'react'
 import { useCart } from './CartContext'
 
 interface StartMenuProps {
   onClose: () => void
 }
 
-export default function StartMenu({ onClose }: StartMenuProps) {
+function StartMenu({ onClose }: StartMenuProps) {
   const { cartCount } = useCart()
 
   return (
@@ -60,3 +61,5 @@ function MenuLink({ href, label, icon, badge, onClick }: { href: string; label: 
     </Link>
   )
 }
+
+export default memo(StartMenu)

@@ -1,13 +1,25 @@
 import { MOCK_SHOP_PRODUCTS, MOCK_PRODUCT_DETAILS, MOCK_CARD_PRODUCTS } from './mockData'
-import { Checkout, ProductEdge, Product } from './types'
+import { Checkout, ProductEdge, Product, CheckoutLineItemInput } from './types'
 
 const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN
 const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN
 
 const DEFAULT_PRODUCT_LIMIT = 25
+const MAX_QUANTITY = 10000
+
+function validateQuantity(quantity: number) {
+  if (quantity <= 0) {
+    throw new Error("Quantity must be greater than 0")
+  }
+  if (quantity > MAX_QUANTITY) {
+    throw new Error("Quantity exceeds maximum limit")
+  }
+}
 
 export async function ShopifyData(query: string, variables?: Record<string, any>) {
   const URL = `https://${domain}/api/2024-01/graphql.json`
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000)
 
   const body: { query: string; variables?: Record<string, any> } = { query }
   if (variables) {
@@ -23,6 +35,7 @@ export async function ShopifyData(query: string, variables?: Record<string, any>
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
+    signal: controller.signal,
   }
 
   try {
@@ -31,8 +44,13 @@ export async function ShopifyData(query: string, variables?: Record<string, any>
     })
 
     return data
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      console.warn('Request to Shopify API timed out')
+    }
     throw new Error("Products not fetched")
+  } finally {
+    clearTimeout(timeoutId)
   }
 }
 
@@ -137,6 +155,8 @@ export async function getProduct(handle: string): Promise<Product | null> {
 }
 
 export async function createCheckout(id: string, quantity: number): Promise<Checkout | null> {
+  validateQuantity(quantity)
+
   const query = `
     mutation checkoutCreate($variantId: ID!, $quantity: Int!) {
       checkoutCreate(input: {
@@ -319,7 +339,9 @@ export async function customerRecover(email: string) {
   return response.data.customerRecover
 }
 
-export async function checkoutLineItemsAdd(checkoutId: string, lineItems: { variantId: string; quantity: number }[]): Promise<Checkout | null> {
+export async function checkoutLineItemsAdd(checkoutId: string, lineItems: CheckoutLineItemInput[]): Promise<Checkout | null> {
+  lineItems.forEach(item => validateQuantity(item.quantity))
+
   const query = `
     mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
       checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
@@ -415,7 +437,9 @@ export interface UpdateCheckoutLineItem {
 }
 
 export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineItem[]): Promise<Checkout | null> {
-  const formattedLineItems = lineItems.map((item) => {
+  lineItems.forEach(item => validateQuantity(item.variantQuantity))
+
+  const formattedLineItems: CheckoutLineItemInput[] = lineItems.map((item) => {
     return {
       variantId: item.id,
       quantity: item.variantQuantity

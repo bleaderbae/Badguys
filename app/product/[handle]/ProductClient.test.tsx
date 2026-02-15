@@ -5,6 +5,7 @@ import { useCart } from '@/components/CartContext'
 import { useParams } from 'next/navigation'
 import { MOCK_PRODUCT_DETAILS } from '@/lib/mockData'
 import userEvent from '@testing-library/user-event'
+import React from 'react'
 
 // Mock dependencies
 jest.mock('next/navigation', () => ({
@@ -90,6 +91,17 @@ describe('ProductClient', () => {
     expect(screen.getByText('Blue')).toBeInTheDocument()
   })
 
+  it('skips fetch when product is provided as prop', async () => {
+    // Pass mockProduct directly as prop
+    render(<ProductClient product={mockProduct} />)
+
+    // Should render immediately
+    expect(screen.getByText(mockProduct.title)).toBeInTheDocument()
+
+    // Verify getProduct was NOT called
+    expect(getProduct).not.toHaveBeenCalled()
+  })
+
   it('updates variant selection', async () => {
     (getProduct as jest.Mock).mockResolvedValue(mockProduct)
     const user = userEvent.setup()
@@ -151,8 +163,8 @@ describe('ProductClient', () => {
         expect(screen.getByText('1')).toBeInTheDocument()
     })
 
-    const incrementBtn = screen.getByRole('button', { name: '+' })
-    const decrementBtn = screen.getByRole('button', { name: '-' })
+    const incrementBtn = screen.getByRole('button', { name: 'Increase quantity' })
+    const decrementBtn = screen.getByRole('button', { name: 'Decrease quantity' })
 
     await user.click(incrementBtn)
     expect(screen.getByText('2')).toBeInTheDocument()
@@ -184,5 +196,37 @@ describe('ProductClient', () => {
     await waitFor(() => {
         expect(screen.getByText('ADDED TO CART!')).toBeInTheDocument()
     })
+  })
+
+  it('renders with accessibility attributes', async () => {
+    (getProduct as jest.Mock).mockResolvedValue(mockProduct)
+    render(<ProductClient />)
+
+    // Wait for product to load
+    await waitFor(() => expect(screen.getByText(mockProduct.title)).toBeInTheDocument())
+
+    // 1. Quantity Controls
+    const decreaseBtn = screen.getByLabelText('Decrease quantity')
+    const increaseBtn = screen.getByLabelText('Increase quantity')
+    expect(decreaseBtn).toBeInTheDocument()
+    expect(increaseBtn).toBeInTheDocument()
+    expect(decreaseBtn).toHaveClass('focus-visible:ring-2')
+    expect(increaseBtn).toHaveClass('focus-visible:ring-2')
+
+    // 2. Variant Buttons
+    const sizeRed = screen.getByText('Red')
+    const sizeBlue = screen.getByText('Blue')
+    // Red is selected by default (first variant)
+    expect(sizeRed).toHaveAttribute('aria-pressed', 'true')
+    expect(sizeBlue).toHaveAttribute('aria-pressed', 'false')
+    expect(sizeRed).toHaveClass('focus-visible:ring-2')
+
+    // 3. Image Thumbnails
+    const thumbnail1 = screen.getByLabelText('View image 1 of 2')
+    const thumbnail2 = screen.getByLabelText('View image 2 of 2')
+
+    expect(thumbnail1).toBeInTheDocument()
+    expect(thumbnail1).toHaveClass('focus-visible:ring-2')
+    expect(thumbnail2).toBeInTheDocument()
   })
 })

@@ -43,6 +43,13 @@ jest.mock('framer-motion', () => {
   };
 });
 
+// Mock CartContext
+jest.mock('./CartContext', () => ({
+  useCart: () => ({
+    cartCount: 2
+  })
+}));
+
 describe('Header Component', () => {
   it('renders the logo correctly', () => {
     render(<Header />);
@@ -65,13 +72,13 @@ describe('Header Component', () => {
 
   it('renders the cart icon with correct count', () => {
     render(<Header />);
-    // Check for aria-label
-    const cartLink = screen.getByLabelText(/View cart, 0 items/i);
+    // Check for aria-label (expecting 2 items from mock)
+    const cartLink = screen.getByLabelText(/View cart, 2 items/i);
     expect(cartLink).toBeInTheDocument();
     expect(cartLink).toHaveAttribute('href', '/cart');
 
     // Check for the count badge
-    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('renders mobile menu button on mobile view', () => {
@@ -85,20 +92,43 @@ describe('Header Component', () => {
     const menuButton = screen.getByLabelText('Open menu');
 
     // Initial state: Mobile menu should not be visible
-    expect(screen.queryByText('CART (0)')).not.toBeInTheDocument();
+    expect(screen.queryByText('CART (2)')).not.toBeInTheDocument();
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
     // Open menu
     fireEvent.click(menuButton);
 
     // Now mobile menu items should be visible
-    expect(screen.getByText('CART (0)')).toBeInTheDocument();
+    expect(screen.getByText('CART (2)')).toBeInTheDocument();
+
+    // Check updated aria attributes
+    const closeButton = screen.getByLabelText('Close menu');
+    expect(closeButton).toHaveAttribute('aria-expanded', 'true');
 
     // Close menu
-    const closeButton = screen.getByLabelText('Close menu');
     fireEvent.click(closeButton);
 
     // Should be closed again
-    expect(screen.queryByText('CART (0)')).not.toBeInTheDocument();
+    expect(screen.queryByText('CART (2)')).not.toBeInTheDocument();
+    const menuButtonAgain = screen.getByLabelText('Open menu');
+    expect(menuButtonAgain).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('renders all navigation links in mobile menu', () => {
+    render(<Header />);
+    const menuButton = screen.getByLabelText('Open menu');
+    fireEvent.click(menuButton);
+
+    const links = ['HOME', 'SHOP', 'ABOUT', 'CONTACT'];
+
+    links.forEach(linkText => {
+      // Should find 2 elements: one desktop (hidden), one mobile (visible)
+      const foundLinks = screen.getAllByText(linkText);
+      expect(foundLinks).toHaveLength(2);
+    });
+
+    // Check specific mobile cart link
+    expect(screen.getByText('CART (2)')).toBeInTheDocument();
   });
 
   it('closes mobile menu when a link is clicked', () => {
@@ -106,10 +136,10 @@ describe('Header Component', () => {
     const menuButton = screen.getByLabelText('Open menu');
     fireEvent.click(menuButton);
 
-    const mobileCartLink = screen.getByText('CART (0)');
+    const mobileCartLink = screen.getByText('CART (2)');
     fireEvent.click(mobileCartLink);
 
     // Menu should close
-    expect(screen.queryByText('CART (0)')).not.toBeInTheDocument();
+    expect(screen.queryByText('CART (2)')).not.toBeInTheDocument();
   });
 });

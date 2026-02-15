@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { memo } from 'react'
 
 interface WindowFrameProps {
   children: React.ReactNode
@@ -8,7 +9,7 @@ interface WindowFrameProps {
   onMinimize?: () => void
 }
 
-export default function WindowFrame({ children, title = "Application", onMinimize }: WindowFrameProps) {
+function WindowFrame({ children, title = "Application", onMinimize }: WindowFrameProps) {
   return (
     <div className="w-full md:max-w-6xl h-full md:h-[85vh] bg-gray-900 border-0 md:border-2 border-gray-600 shadow-2xl md:rounded-lg overflow-hidden flex flex-col md:animate-scale-in relative z-50 pointer-events-auto">
       {/* Title Bar */}
@@ -21,7 +22,7 @@ export default function WindowFrame({ children, title = "Application", onMinimiz
           {onMinimize && (
             <button
               onClick={onMinimize}
-              className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white font-bold text-xs rounded border border-gray-800 transition-colors"
+              className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white font-bold text-xs rounded border border-gray-800 transition-colors focus-visible:ring-2 focus-visible:ring-white focus:outline-none"
               aria-label="Minimize Window"
             >
               _
@@ -29,7 +30,7 @@ export default function WindowFrame({ children, title = "Application", onMinimiz
           )}
           <Link
             href="/"
-            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded border border-red-800 transition-colors"
+            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded border border-red-800 transition-colors focus-visible:ring-2 focus-visible:ring-white focus:outline-none"
             aria-label="Close Window"
           >
             X
@@ -44,3 +45,5 @@ export default function WindowFrame({ children, title = "Application", onMinimiz
     </div>
   )
 }
+
+export default memo(WindowFrame)

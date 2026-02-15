@@ -1,16 +1,16 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import StartMenu from './StartMenu'
 import DesktopIcons from './DesktopIcons'
 import WindowFrame from './WindowFrame'
+import TaskbarClock from './TaskbarClock'
 
 export default function DesktopShell({ children }: { children: React.ReactNode }) {
   const [startOpen, setStartOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
   const pathname = usePathname()
 
   const startButtonRef = useRef<HTMLButtonElement>(null)
@@ -20,12 +20,6 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
   useEffect(() => {
     setIsMinimized(false)
   }, [pathname])
-
-  // Update clock
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(timer)
-  }, [])
 
   // Close start menu when clicking outside
   useEffect(() => {
@@ -72,6 +66,12 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
   const windowTitle = getWindowTitle(pathname)
 
+  // Memoized handlers to prevent unnecessary re-renders of child components
+  const handleStartToggle = useCallback(() => setStartOpen(prev => !prev), [])
+  const handleMinimize = useCallback(() => setIsMinimized(true), [])
+  const handleWindowToggle = useCallback(() => setIsMinimized(prev => !prev), [])
+  const handleStartClose = useCallback(() => setStartOpen(false), [])
+
   return (
     <div className="min-h-screen bg-black font-sans isolate overflow-hidden grid grid-cols-[1fr] grid-rows-[1fr]">
       {/* Wallpaper/Background */}
@@ -97,7 +97,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         {/* Window Modal Layer (Only if not home) */}
         {!isHome && !isMinimized && (
           <div className="fixed inset-0 z-20 flex items-center justify-center p-0 md:p-8 pb-16 pointer-events-none">
-            <WindowFrame title={windowTitle} onMinimize={() => setIsMinimized(true)}>
+            <WindowFrame title={windowTitle} onMinimize={handleMinimize}>
               {children}
             </WindowFrame>
           </div>
@@ -108,7 +108,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
       <div className="fixed bottom-0 left-0 right-0 h-12 bg-gray-900 border-t-2 border-gray-700 flex items-center px-2 shadow-lg z-50">
         <button 
           ref={startButtonRef}
-          onClick={() => setStartOpen(!startOpen)}
+          onClick={handleStartToggle}
           aria-expanded={startOpen}
           aria-haspopup="true"
           aria-controls="start-menu"
@@ -124,7 +124,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         <div className="flex-1 mx-4 flex items-center gap-2 overflow-x-auto">
             {!isHome && (
                 <button
-                    onClick={() => setIsMinimized(!isMinimized)}
+                    onClick={handleWindowToggle}
                     className={`
                         px-4 py-1 flex items-center gap-2 border-2 shadow-sm transition-all min-w-[150px] max-w-[200px] truncate
                         ${!isMinimized
@@ -138,14 +138,12 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
             )}
         </div>
 
-        <div className="bg-gray-800 border-2 border-gray-600 border-b-gray-900 border-r-gray-900 px-4 py-1 shadow-inner text-sm font-mono text-gray-300">
-          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
+        <TaskbarClock />
       </div>
 
       {/* StartMenu */}
       <div ref={startMenuRef}>
-        <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
+        <StartMenu isOpen={startOpen} onClose={handleStartClose} />
       </div>
     </div>
   )

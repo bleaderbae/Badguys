@@ -50,16 +50,19 @@ export default function ShopClient({ products, shopInfo }: ShopClientProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <Link href={`/product/${product.node.handle}`}>
-                    <div className="group cursor-pointer">
-                      <div className="aspect-square bg-bgc-gray-light mb-4 overflow-hidden relative">
+                  <Link
+                    href={`/product/${product.node.handle}`}
+                    className="group block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-bgc-red p-2 -m-2"
+                  >
+                    <div>
+                      <div className="aspect-square bg-bgc-gray-light mb-4 overflow-hidden relative rounded-md">
                         {image ? (
                           <Image
                             src={image.url}
                             alt={image.altText || product.node.title}
                             fill
                             sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="object-cover group-hover:scale-105 group-focus:scale-105 transition-transform duration-300"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-bgc-gray-light to-bgc-black">
@@ -67,7 +70,7 @@ export default function ShopClient({ products, shopInfo }: ShopClientProps) {
                           </div>
                         )}
                       </div>
-                      <h3 className="text-lg font-bold mb-2 group-hover:text-bgc-red transition-colors">
+                      <h3 className="text-lg font-bold mb-2 group-hover:text-bgc-red group-focus:text-bgc-red transition-colors">
                         {product.node.title}
                       </h3>
                       <p className="text-gray-400">${price.toFixed(2)}</p>

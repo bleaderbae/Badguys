@@ -1,4 +1,4 @@
-import { ProductEdge, ProductDetail } from './types'
+import { ProductEdge, ProductDetail, Variant } from './types'
 
 // Helper to create a mock product node
 const createProductNode = (
@@ -240,3 +240,11 @@ export const MOCK_PRODUCT_DETAILS: Record<string, ProductDetail> = {
     },
   },
 }
+
+export const MOCK_VARIANT_MAP: Record<string, { product: ProductDetail; variant: Variant }> = {}
+
+Object.values(MOCK_PRODUCT_DETAILS).forEach((product) => {
+  product.variants?.edges.forEach((edge) => {
+    MOCK_VARIANT_MAP[edge.node.id] = { product, variant: edge.node }
+  })
+})

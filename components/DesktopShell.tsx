@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import StartMenu from './StartMenu'
@@ -66,6 +66,14 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
   const windowTitle = getWindowTitle(pathname)
 
+  const handleStartClose = useCallback(() => {
+    setStartOpen(false)
+  }, [])
+
+  const handleMinimize = useCallback(() => {
+    setIsMinimized(true)
+  }, [])
+
   return (
     <div className="min-h-screen bg-black font-sans isolate overflow-hidden grid grid-cols-[1fr] grid-rows-[1fr]">
       {/* Wallpaper/Background */}
@@ -91,7 +99,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
         {/* Window Modal Layer (Only if not home) */}
         {!isHome && !isMinimized && (
           <div className="fixed inset-0 z-20 flex items-center justify-center p-0 md:p-8 pb-16 pointer-events-none">
-            <WindowFrame title={windowTitle} onMinimize={() => setIsMinimized(true)}>
+            <WindowFrame title={windowTitle} onMinimize={handleMinimize}>
               {children}
             </WindowFrame>
           </div>
@@ -137,7 +145,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
       {/* StartMenu */}
       <div ref={startMenuRef}>
-        <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
+        <StartMenu isOpen={startOpen} onClose={handleStartClose} />
       </div>
     </div>
   )

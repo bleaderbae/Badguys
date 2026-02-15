@@ -22,7 +22,7 @@ function WindowFrame({ children, title = "Application", onMinimize }: WindowFram
           {onMinimize && (
             <button
               onClick={onMinimize}
-              className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white font-bold text-xs rounded border border-gray-800 transition-colors"
+              className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white font-bold text-xs rounded border border-gray-800 transition-colors focus-visible:ring-2 focus-visible:ring-white focus:outline-none"
               aria-label="Minimize Window"
             >
               _
@@ -30,7 +30,7 @@ function WindowFrame({ children, title = "Application", onMinimize }: WindowFram
           )}
           <Link
             href="/"
-            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded border border-red-800 transition-colors"
+            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded border border-red-800 transition-colors focus-visible:ring-2 focus-visible:ring-white focus:outline-none"
             aria-label="Close Window"
           >
             X

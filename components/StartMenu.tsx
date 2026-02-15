@@ -1,22 +1,25 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useCart } from './CartContext'
 
 interface StartMenuProps {
-  isOpen: boolean
   onClose: () => void
 }
 
-export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
+export default function StartMenu({ onClose }: StartMenuProps) {
   const { cartCount } = useCart()
 
-  if (!isOpen) return null
-
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.15 }}
       id="start-menu"
       className="fixed bottom-12 left-2 w-64 bg-gray-800 border-2 border-gray-600 shadow-xl rounded-t-lg overflow-hidden flex flex-col z-50"
+      aria-label="Start Menu"
     >
       <div className="bg-gradient-to-r from-green-700 to-green-900 p-4 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-300 border-2 border-white" />
@@ -36,7 +39,7 @@ export default function StartMenu({ isOpen, onClose }: StartMenuProps) {
         <MenuLink href="/contact" label="Contact Admin" icon="📧" onClick={onClose} />
         <div className="h-px bg-gray-600 my-2" />
       </div>
-    </div>
+    </motion.div>
   )
 }
 

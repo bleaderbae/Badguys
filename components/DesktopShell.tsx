@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { AnimatePresence } from 'framer-motion'
 import StartMenu from './StartMenu'
 import DesktopIcons from './DesktopIcons'
 import WindowFrame from './WindowFrame'
@@ -137,7 +138,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
 
       {/* StartMenu */}
       <div ref={startMenuRef}>
-        <StartMenu isOpen={startOpen} onClose={() => setStartOpen(false)} />
+        <AnimatePresence>
+          {startOpen && <StartMenu onClose={() => setStartOpen(false)} />}
+        </AnimatePresence>
       </div>
     </div>
   )

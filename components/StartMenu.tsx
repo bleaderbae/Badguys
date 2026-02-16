@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { memo } from 'react'
 import { useCart } from './CartContext'
+import { START_MENU_ITEMS } from '@/lib/constants'
 
 interface StartMenuProps {
   onClose: () => void
@@ -27,18 +28,21 @@ function StartMenu({ onClose }: StartMenuProps) {
         <span className="text-white font-bold font-mono">User</span>
       </div>
       <div className="flex-1 py-2">
-        <MenuLink href="/profile" label="My Account" icon="👤" onClick={onClose} />
-        <MenuLink href="/cart" label="Cart" icon="🛒" badge={cartCount} onClick={onClose} />
-        <MenuLink href="/settings" label="Settings" icon="⚙️" onClick={onClose} />
-        <div className="h-px bg-gray-600 my-2" />
-        <MenuLink href="/shop/golf" label="Golf Drop" icon="⛳" onClick={onClose} />
-        <MenuLink href="/shop/samurai" label="Samurai Drop" icon="⚔️" onClick={onClose} />
-        <MenuLink href="/shop/all" label="Shop Network" icon="🌐" onClick={onClose} />
-        <MenuLink href="/product" label="The Vault" icon="⚰️" onClick={onClose} />
-        <div className="h-px bg-gray-600 my-2" />
-        <MenuLink href="/about" label="About System" icon="💻" onClick={onClose} />
-        <MenuLink href="/contact" label="Contact Admin" icon="📧" onClick={onClose} />
-        <div className="h-px bg-gray-600 my-2" />
+        {START_MENU_ITEMS.map((item, index) => {
+          if (item.type === 'separator') {
+            return <div key={index} className="h-px bg-gray-600 my-2" />
+          }
+          return (
+            <MenuLink
+              key={item.href}
+              href={item.href}
+              label={item.label}
+              icon={item.icon}
+              badge={item.href === '/cart' ? cartCount : undefined}
+              onClick={onClose}
+            />
+          )
+        })}
       </div>
     </motion.div>
   )

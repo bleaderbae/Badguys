@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode, useCallback,
 import { createCheckout, checkoutLineItemsAdd, getCheckout, checkoutLineItemsRemove } from '@/lib/shopify'
 import { MOCK_VARIANT_MAP } from '@/lib/mockData'
 import { LineItem, Variant, ProductDetail } from '@/lib/types'
+import { isValidLineItem } from '@/lib/validation'
 
 interface CartContextType {
   checkoutId: string | null
@@ -56,7 +57,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
           const localCart = localStorage.getItem('bgc_local_cart')
           if (localCart) {
               try {
-                  setCartLines(JSON.parse(localCart))
+                  const parsed = JSON.parse(localCart)
+                  if (Array.isArray(parsed)) {
+                      setCartLines(parsed.filter(isValidLineItem))
+                  }
               } catch (e) {
                   console.error('Error parsing local cart', e)
               }

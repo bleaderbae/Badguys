@@ -7,6 +7,35 @@ const storefrontAccessToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_
 const DEFAULT_PRODUCT_LIMIT = 25
 const MAX_QUANTITY = 10000
 
+const CHECKOUT_FRAGMENT = `
+  id
+  webUrl
+  lineItems(first: 25) {
+    edges {
+      node {
+        id
+        title
+        quantity
+        variant {
+          id
+          price {
+            amount
+          }
+          title
+          image {
+            url
+            altText
+          }
+          product {
+            handle
+            title
+          }
+        }
+      }
+    }
+  }
+`
+
 function validateQuantity(quantity: number) {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0")
@@ -163,32 +192,7 @@ export async function createCheckout(id: string, quantity: number): Promise<Chec
         lineItems: [{ variantId: $variantId, quantity: $quantity }]
       }) {
         checkout {
-          id
-          webUrl
-          lineItems(first: 25) {
-            edges {
-              node {
-                id
-                title
-                quantity
-                variant {
-                  id
-                  price {
-                    amount
-                  }
-                  title
-                  image {
-                    url
-                    altText
-                  }
-                  product {
-                    handle
-                    title
-                  }
-                }
-              }
-            }
-          }
+          ${CHECKOUT_FRAGMENT}
         }
       }
     }`
@@ -346,32 +350,7 @@ export async function checkoutLineItemsAdd(checkoutId: string, lineItems: Checko
     mutation checkoutLineItemsAdd($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
       checkoutLineItemsAdd(lineItems: $lineItems, checkoutId: $checkoutId) {
         checkout {
-          id
-          webUrl
-          lineItems(first: 25) {
-            edges {
-              node {
-                id
-                title
-                quantity
-                variant {
-                  id
-                  price {
-                    amount
-                  }
-                  title
-                  image {
-                    url
-                    altText
-                  }
-                  product {
-                    handle
-                    title
-                  }
-                }
-              }
-            }
-          }
+          ${CHECKOUT_FRAGMENT}
         }
         checkoutUserErrors {
           code
@@ -396,32 +375,7 @@ export async function getCheckout(checkoutId: string): Promise<Checkout | null> 
   query checkout($checkoutId: ID!) {
     node(id: $checkoutId) {
       ... on Checkout {
-        id
-        webUrl
-        lineItems(first: 25) {
-          edges {
-            node {
-              id
-              title
-              quantity
-              variant {
-                id
-                price {
-                  amount
-                }
-                title
-                image {
-                  url
-                  altText
-                }
-                product {
-                  handle
-                  title
-                }
-              }
-            }
-          }
-        }
+        ${CHECKOUT_FRAGMENT}
       }
     }
   }`
@@ -450,32 +404,7 @@ export async function updateCheckout(id: string, lineItems: UpdateCheckoutLineIt
     mutation checkoutLineItemsReplace($lineItems: [CheckoutLineItemInput!]!, $checkoutId: ID!) {
       checkoutLineItemsReplace(lineItems: $lineItems, checkoutId: $checkoutId) {
         checkout {
-          id
-          webUrl
-          lineItems(first: 25) {
-            edges {
-              node {
-                id
-                title
-                quantity
-                variant {
-                  id
-                  price {
-                    amount
-                  }
-                  title
-                  image {
-                    url
-                    altText
-                  }
-                  product {
-                    handle
-                    title
-                  }
-                }
-              }
-            }
-          }
+          ${CHECKOUT_FRAGMENT}
         }
       }
     }`
@@ -495,32 +424,7 @@ export async function checkoutLineItemsRemove(checkoutId: string, lineItemIds: s
     mutation checkoutLineItemsRemove($checkoutId: ID!, $lineItemIds: [ID!]!) {
       checkoutLineItemsRemove(checkoutId: $checkoutId, lineItemIds: $lineItemIds) {
         checkout {
-          id
-          webUrl
-          lineItems(first: 25) {
-            edges {
-              node {
-                id
-                title
-                quantity
-                variant {
-                  id
-                  price {
-                    amount
-                  }
-                  title
-                  image {
-                    url
-                    altText
-                  }
-                  product {
-                    handle
-                    title
-                  }
-                }
-              }
-            }
-          }
+          ${CHECKOUT_FRAGMENT}
         }
         checkoutUserErrors {
           code

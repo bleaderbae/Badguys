@@ -28,9 +28,23 @@ function TaskbarClock() {
     )
   }
 
+  const dateString = currentTime.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+
+  const timeString = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+
   return (
-    <div className="bg-gray-800 border-2 border-gray-600 border-b-gray-900 border-r-gray-900 px-4 py-1 shadow-inner text-sm font-mono text-gray-300">
-      {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    <div
+      className="bg-gray-800 border-2 border-gray-600 border-b-gray-900 border-r-gray-900 px-4 py-1 shadow-inner text-sm font-mono text-gray-300 cursor-default select-none"
+      title={dateString}
+      aria-label={`Current time: ${timeString}, Date: ${dateString}`}
+      role="timer"
+    >
+      {timeString}
     </div>
   )
 }

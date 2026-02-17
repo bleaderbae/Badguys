@@ -20,7 +20,8 @@ export default function RecoverPage() {
       const data = await customerRecover(email)
 
       if (data?.customerUserErrors?.length > 0) {
-        setError(data.customerUserErrors[0].message)
+        console.warn('Recover password failed (hidden from user):', data.customerUserErrors[0].message)
+        setSuccess(true)
       } else {
         setSuccess(true)
       }

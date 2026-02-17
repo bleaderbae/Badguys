@@ -48,7 +48,15 @@ function StartMenu({ onClose }: StartMenuProps) {
   )
 }
 
-function MenuLink({ href, label, icon, badge, onClick }: { href: string; label: string; icon?: string; badge?: number; onClick: () => void }) {
+/**
+ * MenuLink
+ *
+ * Performance optimization:
+ * This component is memoized to prevent unnecessary re-renders when the parent
+ * StartMenu updates (e.g. when cart count changes). Since most menu items are static,
+ * they don't need to re-render.
+ */
+const MenuLink = memo(function MenuLink({ href, label, icon, badge, onClick }: { href: string; label: string; icon?: string; badge?: number; onClick: () => void }) {
   return (
     <Link 
       href={href} 
@@ -64,6 +72,6 @@ function MenuLink({ href, label, icon, badge, onClick }: { href: string; label: 
       )}
     </Link>
   )
-}
+})
 
 export default memo(StartMenu)

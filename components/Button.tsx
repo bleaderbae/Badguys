@@ -13,6 +13,8 @@ interface ButtonProps extends Omit<HTMLMotionProps<"button">, 'ref'> {
   href?: string
 }
 
+const MotionLink = motion.create(Link)
+
 export default function Button({
   children,
   variant = 'primary',
@@ -33,16 +35,15 @@ export default function Button({
 
   if (href) {
     return (
-      <Link href={href} className="contents">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={combinedClassName}
-          {...(props as any)}
-        >
-          {children}
-        </motion.div>
-      </Link>
+      <MotionLink
+        href={href}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={combinedClassName}
+        {...(props as any)}
+      >
+        {children}
+      </MotionLink>
     )
   }
 

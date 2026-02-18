@@ -95,7 +95,7 @@ describe('LoginPage', () => {
     })
   })
 
-  it('shows error from API on failure', async () => {
+  it('shows generic error on failure', async () => {
     (customerAccessTokenCreate as jest.Mock).mockResolvedValue({
       customerUserErrors: [{ message: 'Invalid credentials' }],
     })
@@ -105,7 +105,7 @@ describe('LoginPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'LOGIN' }))
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid credentials')).toBeInTheDocument()
+      expect(screen.getByText('Invalid email or password.')).toBeInTheDocument()
     })
   })
 })

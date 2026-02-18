@@ -20,7 +20,9 @@ export default function RecoverPage() {
       const data = await customerRecover(email)
 
       if (data?.customerUserErrors?.length > 0) {
-        setError(data.customerUserErrors[0].message)
+        // Prevent User Enumeration: Log error but show success message
+        console.warn('Recovery error:', data.customerUserErrors[0].message)
+        setSuccess(true)
       } else {
         setSuccess(true)
       }

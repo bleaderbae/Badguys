@@ -49,12 +49,14 @@ export default function LoginPage() {
       const data = await customerAccessTokenCreate(cleanEmail, password)
 
       if (data?.customerUserErrors?.length > 0) {
-        setError(data.customerUserErrors[0].message)
+        // Prevent User Enumeration by showing a generic error message
+        console.error('Login error:', data.customerUserErrors[0].message)
+        setError('Invalid email or password.')
       } else if (data?.customerAccessToken?.accessToken) {
         localStorage.setItem('bgc_customer_token', data.customerAccessToken.accessToken)
         router.push('/account')
       } else {
-        setError('Login failed. Please check your credentials.')
+        setError('Invalid email or password.')
       }
     } catch (err) {
       console.error(err)

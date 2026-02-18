@@ -18,7 +18,21 @@ export default function ProductClient({ product: initialProduct }: { product?: P
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
     initialProduct?.variants?.edges[0]?.node || null
   )
-  const [selectedImage, setSelectedImage] = useState(0)
+
+  const getImageIndexForVariant = (variant: Variant, prod: ProductDetail) => {
+    if (variant.image) {
+      return prod.images.edges.findIndex(img => img.node.url === variant.image!.url)
+    }
+    return -1
+  }
+
+  const [selectedImage, setSelectedImage] = useState(() => {
+    if (initialProduct?.variants?.edges[0]?.node && initialProduct) {
+      const idx = getImageIndexForVariant(initialProduct.variants.edges[0].node, initialProduct)
+      return idx !== -1 ? idx : 0
+    }
+    return 0
+  })
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
   const [justAdded, setJustAdded] = useState(false)
@@ -31,7 +45,10 @@ export default function ProductClient({ product: initialProduct }: { product?: P
         const productData = await getProduct(handle)
         setProduct(productData)
         if (productData && productData.variants && productData.variants.edges.length > 0) {
-          setSelectedVariant(productData.variants.edges[0].node)
+          const firstVariant = productData.variants.edges[0].node
+          setSelectedVariant(firstVariant)
+          const idx = getImageIndexForVariant(firstVariant, productData)
+          if (idx !== -1) setSelectedImage(idx)
         }
       } catch (error) {
         console.error('Error fetching product:', error)
@@ -44,18 +61,6 @@ export default function ProductClient({ product: initialProduct }: { product?: P
       fetchProduct()
     }
   }, [handle, product])
-
-  // Update selected image when variant changes
-  useEffect(() => {
-    if (selectedVariant?.image && product) {
-      const imageIndex = product.images.edges.findIndex(
-        (img) => img.node.url === selectedVariant.image!.url
-      )
-      if (imageIndex !== -1) {
-        setSelectedImage(imageIndex)
-      }
-    }
-  }, [selectedVariant, product])
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return
@@ -187,7 +192,13 @@ export default function ProductClient({ product: initialProduct }: { product?: P
                       return (
                         <button
                           key={value}
-                          onClick={() => variant && setSelectedVariant(variant.node)}
+                          onClick={() => {
+                            if (variant && product) {
+                              setSelectedVariant(variant.node)
+                              const idx = getImageIndexForVariant(variant.node, product)
+                              if (idx !== -1) setSelectedImage(idx)
+                            }
+                          }}
                           disabled={!variant?.node.availableForSale}
                           aria-pressed={isSelected}
                           className={`px-4 py-2 font-bold border-2 transition-colors focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none ${

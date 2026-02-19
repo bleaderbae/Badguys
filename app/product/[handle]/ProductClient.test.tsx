@@ -102,7 +102,7 @@ describe('ProductClient', () => {
     expect(getProduct).not.toHaveBeenCalled()
   })
 
-  it('updates variant selection', async () => {
+  it('updates variant selection and associated image', async () => {
     (getProduct as jest.Mock).mockResolvedValue(mockProduct)
     const user = userEvent.setup()
 
@@ -120,11 +120,19 @@ describe('ProductClient', () => {
     expect(redButton).toHaveClass('bg-bgc-red')
     expect(blueButton).not.toHaveClass('bg-bgc-red')
 
+    // Initial image should be Red
+    const mainImagesRed = screen.getAllByRole('img').filter(img => !img.closest('button'))
+    expect(mainImagesRed[0]).toHaveAttribute('src', expect.stringContaining('QA+Red'))
+
     // Click Blue
     await user.click(blueButton)
 
     expect(blueButton).toHaveClass('bg-bgc-red')
     expect(redButton).not.toHaveClass('bg-bgc-red')
+
+    // Image should update to Blue
+    const mainImagesBlue = screen.getAllByRole('img').filter(img => !img.closest('button'))
+    expect(mainImagesBlue[0]).toHaveAttribute('src', expect.stringContaining('QA+Blue'))
   })
 
   it('updates main image when thumbnail is clicked', async () => {

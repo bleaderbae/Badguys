@@ -18,10 +18,35 @@ export default function ProductClient({ product: initialProduct }: { product?: P
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
     initialProduct?.variants?.edges[0]?.node || null
   )
-  const [selectedImage, setSelectedImage] = useState(0)
+
+  // Initialize selectedImage based on the initial variant's image if available
+  const [selectedImage, setSelectedImage] = useState(() => {
+    if (initialProduct?.variants?.edges[0]?.node?.image && initialProduct.images) {
+      const variantImage = initialProduct.variants.edges[0].node.image.url
+      const index = initialProduct.images.edges.findIndex(img => img.node.url === variantImage)
+      return index !== -1 ? index : 0
+    }
+    return 0
+  })
+
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
   const [justAdded, setJustAdded] = useState(false)
+
+  // Optimistic update handler for variant changes
+  const handleVariantChange = (variant: Variant) => {
+    setSelectedVariant(variant)
+
+    // Update image synchronously if variant has an associated image
+    if (variant.image && product) {
+      const imageIndex = product.images.edges.findIndex(
+        (img) => img.node.url === variant.image!.url
+      )
+      if (imageIndex !== -1) {
+        setSelectedImage(imageIndex)
+      }
+    }
+  }
 
   useEffect(() => {
     async function fetchProduct() {
@@ -30,8 +55,20 @@ export default function ProductClient({ product: initialProduct }: { product?: P
       try {
         const productData = await getProduct(handle)
         setProduct(productData)
+
         if (productData && productData.variants && productData.variants.edges.length > 0) {
-          setSelectedVariant(productData.variants.edges[0].node)
+          const initialVariant = productData.variants.edges[0].node
+          setSelectedVariant(initialVariant)
+
+          // Set initial image if variant has one
+          if (initialVariant.image) {
+            const imageIndex = productData.images.edges.findIndex(
+              (img) => img.node.url === initialVariant.image!.url
+            )
+            if (imageIndex !== -1) {
+              setSelectedImage(imageIndex)
+            }
+          }
         }
       } catch (error) {
         console.error('Error fetching product:', error)
@@ -44,18 +81,6 @@ export default function ProductClient({ product: initialProduct }: { product?: P
       fetchProduct()
     }
   }, [handle, product])
-
-  // Update selected image when variant changes
-  useEffect(() => {
-    if (selectedVariant?.image && product) {
-      const imageIndex = product.images.edges.findIndex(
-        (img) => img.node.url === selectedVariant.image!.url
-      )
-      if (imageIndex !== -1) {
-        setSelectedImage(imageIndex)
-      }
-    }
-  }, [selectedVariant, product])
 
   const handleAddToCart = async () => {
     if (!selectedVariant) return
@@ -187,7 +212,7 @@ export default function ProductClient({ product: initialProduct }: { product?: P
                       return (
                         <button
                           key={value}
-                          onClick={() => variant && setSelectedVariant(variant.node)}
+                          onClick={() => variant && handleVariantChange(variant.node)}
                           disabled={!variant?.node.availableForSale}
                           aria-pressed={isSelected}
                           className={`px-4 py-2 font-bold border-2 transition-colors focus-visible:ring-2 focus-visible:ring-bgc-red focus:outline-none ${

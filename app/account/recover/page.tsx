@@ -19,14 +19,17 @@ export default function RecoverPage() {
     try {
       const data = await customerRecover(email)
 
+      // SECURITY: Always show success message to prevent User Enumeration
+      // Even if the email doesn't exist, we don't want to tell the attacker.
       if (data?.customerUserErrors?.length > 0) {
-        setError(data.customerUserErrors[0].message)
-      } else {
-        setSuccess(true)
+        console.error('Recover error (hidden from user):', data.customerUserErrors)
       }
+
+      setSuccess(true)
     } catch (err) {
       console.error(err)
-      setError('An error occurred.')
+      // Only show error for system failures, not user-not-found
+      setError('An error occurred. Please try again later.')
     } finally {
       setLoading(false)
     }

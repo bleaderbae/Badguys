@@ -105,7 +105,7 @@ describe('LoginPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'LOGIN' }))
 
     await waitFor(() => {
-      expect(screen.getByText('Invalid credentials')).toBeInTheDocument()
+      expect(screen.getByText('Invalid email or password.')).toBeInTheDocument()
     })
   })
 })

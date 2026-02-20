@@ -114,7 +114,7 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
           aria-haspopup="true"
           aria-controls="start-menu"
           className={`
-            px-4 py-1 flex items-center gap-2 border-2 shadow-sm active:shadow-inner active:border-gray-900 transition-all
+            px-4 py-1 flex items-center gap-2 border-2 shadow-sm active:shadow-inner active:border-gray-900 transition-all focus-visible:ring-2 focus-visible:ring-green-400 focus:outline-none active:scale-95
             ${startOpen ? 'bg-gray-700 border-gray-800 border-r-gray-600 border-b-gray-600 inset-shadow' : 'bg-gray-800 border-gray-600 border-r-gray-900 border-b-gray-900'}
           `}
         >
@@ -126,8 +126,10 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
             {!isHome && (
                 <button
                     onClick={handleWindowToggle}
+                    aria-label={!isMinimized ? `Minimize ${windowTitle}` : `Restore ${windowTitle}`}
+                    title={!isMinimized ? `Minimize ${windowTitle}` : `Restore ${windowTitle}`}
                     className={`
-                        px-4 py-1 flex items-center gap-2 border-2 shadow-sm transition-all min-w-[150px] max-w-[200px] truncate
+                        px-4 py-1 flex items-center gap-2 border-2 shadow-sm transition-all min-w-[150px] max-w-[200px] truncate focus-visible:ring-2 focus-visible:ring-green-400 focus:outline-none active:scale-95
                         ${!isMinimized
                             ? 'bg-gray-700 border-gray-800 border-r-gray-600 border-b-gray-600 inset-shadow'
                             : 'bg-gray-800 border-gray-600 border-r-gray-900 border-b-gray-900 hover:bg-gray-700'

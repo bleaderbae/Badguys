@@ -1,0 +1,71 @@
+
+> badguys@1.0.0 dev /app
+> next dev
+
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 898ms (114 modules)
+ ○ Compiling /shop ...
+ ✓ Compiled /shop in 11.6s (1499 modules)
+Error fetching products, using mock data: TypeError: Cannot read properties of undefined (reading 'products')
+    at getAllProducts (lib/shopify.ts:115:39)
+    at async ShopPage (app/shop/page.tsx:10:32)
+  113 |   try {
+  114 |     const response = await ShopifyData(query, { first: limit })
+> 115 |     const allProducts = response.data.products.edges ? response.data.products.edges : []
+      |                                       ^
+  116 |     if (allProducts.length === 0) return MOCK_SHOP_PRODUCTS
+  117 |     return allProducts
+  118 |   } catch (error) {
+Error fetching shop info: TypeError: Cannot read properties of undefined (reading 'shop')
+    at getShopInfo (lib/shopify.ts:219:26)
+    at async ShopPage (app/shop/page.tsx:10:32)
+  217 |   try {
+  218 |     const response = await ShopifyData(query)
+> 219 |     return response.data.shop ? response.data.shop : { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+      |                          ^
+  220 |   } catch (error) {
+  221 |     console.warn("Error fetching shop info:", error)
+  222 |     return { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+ ✓ Compiled in 3.2s (673 modules)
+ GET /shop 200 in 14787ms
+Error fetching products, using mock data: TypeError: Cannot read properties of undefined (reading 'products')
+    at getAllProducts (lib/shopify.ts:115:39)
+    at async ShopPage (app/shop/page.tsx:10:32)
+  113 |   try {
+  114 |     const response = await ShopifyData(query, { first: limit })
+> 115 |     const allProducts = response.data.products.edges ? response.data.products.edges : []
+      |                                       ^
+  116 |     if (allProducts.length === 0) return MOCK_SHOP_PRODUCTS
+  117 |     return allProducts
+  118 |   } catch (error) {
+Error fetching shop info: TypeError: Cannot read properties of undefined (reading 'shop')
+    at getShopInfo (lib/shopify.ts:219:26)
+    at async ShopPage (app/shop/page.tsx:10:32)
+  217 |   try {
+  218 |     const response = await ShopifyData(query)
+> 219 |     return response.data.shop ? response.data.shop : { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+      |                          ^
+  220 |   } catch (error) {
+  221 |     console.warn("Error fetching shop info:", error)
+  222 |     return { name: 'Bad Guys Club', description: 'The lifestyle brand for modern bad guys' }
+ GET /shop 200 in 243ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+[TypeError: fetch failed] {
+  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
+    errno: -3001,
+    code: 'EAI_AGAIN',
+    syscall: 'getaddrinfo',
+    hostname: 'via.placeholder.com'
+  }
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.8s (1813 modules)
+ ELIFECYCLE  Command failed.
+[?25h

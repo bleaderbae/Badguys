@@ -1,0 +1,28 @@
+
+> badguys@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 1975ms
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 822ms (114 modules)
+ ○ Compiling /account/login ...
+ ✓ Compiled /account/login in 9.7s (1491 modules)
+ GET /account/login 200 in 11222ms
+ ✓ Compiled in 1535ms (672 modules)
+ GET /account/login 200 in 94ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+ ○ Compiling /account/recover ...
+ ✓ Compiled /account/recover in 1023ms (1466 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /account/recover 200 in 1486ms

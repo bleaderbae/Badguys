@@ -19,13 +19,14 @@ export default function RecoverPage() {
     try {
       const data = await customerRecover(email)
 
+      // Always show success message to prevent user enumeration
+      // But log errors internally
       if (data?.customerUserErrors?.length > 0) {
-        setError(data.customerUserErrors[0].message)
-      } else {
-        setSuccess(true)
+        console.error('Recover password error:', data.customerUserErrors)
       }
+      setSuccess(true)
     } catch (err) {
-      console.error(err)
+      console.error(err instanceof Error ? err.message : err)
       setError('An error occurred.')
     } finally {
       setLoading(false)

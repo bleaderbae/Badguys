@@ -126,6 +126,9 @@ export default function DesktopShell({ children }: { children: React.ReactNode }
             {!isHome && (
                 <button
                     onClick={handleWindowToggle}
+                    aria-label={!isMinimized ? `Minimize ${windowTitle}` : `Restore ${windowTitle}`}
+                    title={!isMinimized ? `Minimize ${windowTitle}` : `Restore ${windowTitle}`}
+                    aria-pressed={!isMinimized}
                     className={`
                         px-4 py-1 flex items-center gap-2 border-2 shadow-sm transition-all min-w-[150px] max-w-[200px] truncate
                         ${!isMinimized

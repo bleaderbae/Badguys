@@ -97,7 +97,8 @@ export async function getAllProducts(limit: number = DEFAULT_PRODUCT_LIMIT): Pro
               amount
             }
           }
-          images(first: 5) {
+          # Optimization: Only fetch the first image (thumbnail) for product lists to reduce payload size.
+          images(first: 1) {
             edges {
               node {
                 url

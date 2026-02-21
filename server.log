@@ -1,0 +1,93 @@
+
+> badguys@1.0.0 dev
+> next dev
+
+   ▲ Next.js 15.5.12
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 1059ms (114 modules)
+ ○ Compiling /product/[handle] ...
+ ✓ Compiled /product/[handle] in 13s (1494 modules)
+ ✓ Compiled in 1161ms (672 modules)
+Error fetching products, using mock data: Error: Products not fetched
+    at ShopifyData (lib/shopify.ts:80:11)
+    at async getAllProducts (lib/shopify.ts:114:22)
+    at async Object.generateStaticParams (app/product/[handle]/page.tsx:6:22)
+  78 |       console.warn('Request to Shopify API timed out')
+  79 |     }
+> 80 |     throw new Error("Products not fetched")
+     |           ^
+  81 |   } finally {
+  82 |     clearTimeout(timeoutId)
+  83 |   }
+ GET /product/qa-test-product 200 in 16517ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+[TypeError: fetch failed] {
+  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
+    errno: -3001,
+    code: 'EAI_AGAIN',
+    syscall: 'getaddrinfo',
+    hostname: 'via.placeholder.com'
+  }
+}
+[TypeError: fetch failed] {
+  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
+    errno: -3001,
+    code: 'EAI_AGAIN',
+    syscall: 'getaddrinfo',
+    hostname: 'via.placeholder.com'
+  }
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.9s (1808 modules)
+ GET /product/qa-test-product 200 in 1796ms
+ GET /product/qa-test-product 200 in 51ms
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2Fff0000%2Fffffff%3Ftext%3DQA%2BRed&w=1920&q=75 500 in 5290ms
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2Fff0000%2Fffffff%3Ftext%3DQA%2BRed&w=1920&q=75 500 in 4945ms
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2F0000ff%2Fffffff%3Ftext%3DQA%2BBlue&w=1920&q=75 500 in 5166ms
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2F0000ff%2Fffffff%3Ftext%3DQA%2BBlue&w=1920&q=75 500 in 4922ms
+Error fetching products, using mock data: Error: Products not fetched
+    at ShopifyData (lib/shopify.ts:80:11)
+    at async getAllProducts (lib/shopify.ts:114:22)
+    at async Object.generateStaticParams (app/product/[handle]/page.tsx:6:22)
+  78 |       console.warn('Request to Shopify API timed out')
+  79 |     }
+> 80 |     throw new Error("Products not fetched")
+     |           ^
+  81 |   } finally {
+  82 |     clearTimeout(timeoutId)
+  83 |   }
+ GET /product/qa-test-product 200 in 451ms
+Error fetching products, using mock data: Error: Products not fetched
+    at ShopifyData (lib/shopify.ts:80:11)
+    at async getAllProducts (lib/shopify.ts:114:22)
+    at async Object.generateStaticParams (app/product/[handle]/page.tsx:6:22)
+  78 |       console.warn('Request to Shopify API timed out')
+  79 |     }
+> 80 |     throw new Error("Products not fetched")
+     |           ^
+  81 |   } finally {
+  82 |     clearTimeout(timeoutId)
+  83 |   }
+[TypeError: fetch failed] {
+  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
+    errno: -3001,
+    code: 'EAI_AGAIN',
+    syscall: 'getaddrinfo',
+    hostname: 'via.placeholder.com'
+  }
+}
+[TypeError: fetch failed] {
+  [cause]: [Error: getaddrinfo EAI_AGAIN via.placeholder.com] {
+    errno: -3001,
+    code: 'EAI_AGAIN',
+    syscall: 'getaddrinfo',
+    hostname: 'via.placeholder.com'
+  }
+}
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2Fff0000%2Fffffff%3Ftext%3DQA%2BRed&w=1920&q=75 500 in 1018ms
+ GET /_next/image?url=https%3A%2F%2Fvia.placeholder.com%2F600x600%2Fff0000%2Fffffff%3Ftext%3DQA%2BRed&w=1920&q=75 500 in 857ms
